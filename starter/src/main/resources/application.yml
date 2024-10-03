@@ -1,6 +1,6 @@
 server:
   servlet:
-    context-path: /api
+    context-path: /
     session:
       timeout: 30m
   port: 8080
@@ -61,15 +61,6 @@ management:
       enabled: off
     process:
       enabled: off
-
-logging:
-  level:
-    com:
-      xweb:
-        modules:
-          security:
-            mapper: TRACE
-    web: DEBUG
 
 info:
   app:

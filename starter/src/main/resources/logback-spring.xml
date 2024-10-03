@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="10 seconds">
+
+    <springProperty scope="context" name="APPLICATION_NAME" source="spring.application.name" />
+    <property name="PATH" value="${env.log-filepath:-.\logs}" />
+
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%green(%d{yyyy-MM-dd HH:mm:ss.SSS}) %highlight(%-5level) %blue(%-30logger{30}:%-4line) %green(%thread) %thread %blue(%-19X{LOG_ID}) %msg%n</pattern>
+        </encoder>
+        <!-- 添加自定义日志过滤器，过滤不需要输出日志的特定类 -->
+<!--        <filter class="jp.onehr.elegantapi.common.config.LogbackFilter" />-->
+    </appender>
+
+    <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${PATH}/${APPLICATION_NAME}.log</file>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %-50logger{50}:%-4line %thread %green(%-16X{LOG_ID}) %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${PATH}/${APPLICATION_NAME}.%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+            <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <layout>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %-50logger{50}:%-4line %thread %green(%-16X{LOG_ID}) %msg%n</pattern>
+        </layout>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <springProfile name="prod">
+        <root level="INFO">
+            <appender-ref ref="INFO_FILE"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="test,dev">
+        <root level="INFO">
+            <appender-ref ref="STDOUT"/>
+        </root>
+        <logger name="com.xweb.modules.security.mapper" level="TRACE" additivity="true" />
+    </springProfile>
+
+</configuration>
