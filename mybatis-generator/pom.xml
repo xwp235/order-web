@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.xweb</groupId>
+        <artifactId>order-web</artifactId>
+        <version>1.0.0</version>
+    </parent>
+    <groupId>com.xweb.generator</groupId>
+    <artifactId>mybatis-generator</artifactId>
+    <packaging>jar</packaging>
+    <name>mybatis-generator</name>
+
+    <properties>
+        <java.version>21</java.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-maven-plugin</artifactId>
+                <version>1.4.2</version>
+                <configuration>
+                    <!--如果有多个模块，可以配置多个configurationFile-->
+                    <!--                    <configurationFile/>-->
+                    <configurationFile>src/main/resources/generator-config.xml</configurationFile>
+                    <overwrite>true</overwrite>
+                    <verbose>true</verbose>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.xweb.plugins</groupId>
+                        <artifactId>mybatis-plugins</artifactId>
+                        <version>1.0.0</version>
+                        <scope>system</scope>
+                        <systemPath>D:\apache-maven-3.8.6\repository\com\xweb\plugins\mybatis-plugins\1.0.0\mybatis-plugins-1.0.0.jar</systemPath>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>42.7.3</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

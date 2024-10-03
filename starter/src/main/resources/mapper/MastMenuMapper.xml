@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xweb.starter.modules.security.mapper.MastMenuMapper">
+  <resultMap id="BaseResultMap" type="com.xweb.starter.modules.security.domain.entity.MastMenu">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="mm_id" jdbcType="INTEGER" property="mmId" />
+    <result column="mm_parent_id" jdbcType="INTEGER" property="mmParentId" />
+    <result column="mm_type" jdbcType="SMALLINT" property="mmType" />
+    <result column="mm_path" jdbcType="VARCHAR" property="mmPath" />
+    <result column="mm_state" jdbcType="SMALLINT" property="mmState" />
+    <result column="mm_icon" jdbcType="VARCHAR" property="mmIcon" />
+    <result column="mm_name" jdbcType="OTHER" property="mmName" />
+    <result column="mm_code" jdbcType="VARCHAR" property="mmCode" />
+    <result column="mm_level_chain" jdbcType="VARCHAR" property="mmLevelChain" />
+    <result column="mm_level" jdbcType="INTEGER" property="mmLevel" />
+    <result column="mm_sort" jdbcType="INTEGER" property="mmSort" />
+    <result column="mm_remark" jdbcType="VARCHAR" property="mmRemark" />
+    <result column="mm_enable_edit" jdbcType="BIT" property="mmEnableEdit" />
+    <result column="mm_enable_delete" jdbcType="BIT" property="mmEnableDelete" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, mm_id, mm_parent_id, mm_type, mm_path, mm_state, mm_icon, mm_name, mm_code, mm_level_chain,
+    mm_level, mm_sort, mm_remark, mm_enable_edit, mm_enable_delete, create_time, update_time
+  </sql>
+  <select id="selectByExample" parameterType="com.xweb.starter.modules.security.domain.entity.MastMenuExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from mast_menu
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mast_menu
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from mast_menu
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xweb.starter.modules.security.domain.entity.MastMenuExample">
+    delete from mast_menu
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xweb.starter.modules.security.domain.entity.MastMenu">
+    insert into mast_menu (id, mm_id, mm_parent_id,
+      mm_type, mm_path, mm_state,
+      mm_icon, mm_name, mm_code,
+      mm_level_chain, mm_level, mm_sort,
+      mm_remark, mm_enable_edit, mm_enable_delete,
+      create_time, update_time)
+    values (#{id,jdbcType=BIGINT}, #{mmId,jdbcType=INTEGER}, #{mmParentId,jdbcType=INTEGER},
+      #{mmType,jdbcType=SMALLINT}, #{mmPath,jdbcType=VARCHAR}, #{mmState,jdbcType=SMALLINT},
+      #{mmIcon,jdbcType=VARCHAR}, #{mmName,jdbcType=OTHER}, #{mmCode,jdbcType=VARCHAR},
+      #{mmLevelChain,jdbcType=VARCHAR}, #{mmLevel,jdbcType=INTEGER}, #{mmSort,jdbcType=INTEGER},
+      #{mmRemark,jdbcType=VARCHAR}, #{mmEnableEdit,jdbcType=BIT}, #{mmEnableDelete,jdbcType=BIT},
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xweb.starter.modules.security.domain.entity.MastMenu">
+    insert into mast_menu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="mmId != null">
+        mm_id,
+      </if>
+      <if test="mmParentId != null">
+        mm_parent_id,
+      </if>
+      <if test="mmType != null">
+        mm_type,
+      </if>
+      <if test="mmPath != null">
+        mm_path,
+      </if>
+      <if test="mmState != null">
+        mm_state,
+      </if>
+      <if test="mmIcon != null">
+        mm_icon,
+      </if>
+      <if test="mmName != null">
+        mm_name,
+      </if>
+      <if test="mmCode != null">
+        mm_code,
+      </if>
+      <if test="mmLevelChain != null">
+        mm_level_chain,
+      </if>
+      <if test="mmLevel != null">
+        mm_level,
+      </if>
+      <if test="mmSort != null">
+        mm_sort,
+      </if>
+      <if test="mmRemark != null">
+        mm_remark,
+      </if>
+      <if test="mmEnableEdit != null">
+        mm_enable_edit,
+      </if>
+      <if test="mmEnableDelete != null">
+        mm_enable_delete,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="mmId != null">
+        #{mmId,jdbcType=INTEGER},
+      </if>
+      <if test="mmParentId != null">
+        #{mmParentId,jdbcType=INTEGER},
+      </if>
+      <if test="mmType != null">
+        #{mmType,jdbcType=SMALLINT},
+      </if>
+      <if test="mmPath != null">
+        #{mmPath,jdbcType=VARCHAR},
+      </if>
+      <if test="mmState != null">
+        #{mmState,jdbcType=SMALLINT},
+      </if>
+      <if test="mmIcon != null">
+        #{mmIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="mmName != null">
+        #{mmName,jdbcType=OTHER},
+      </if>
+      <if test="mmCode != null">
+        #{mmCode,jdbcType=VARCHAR},
+      </if>
+      <if test="mmLevelChain != null">
+        #{mmLevelChain,jdbcType=VARCHAR},
+      </if>
+      <if test="mmLevel != null">
+        #{mmLevel,jdbcType=INTEGER},
+      </if>
+      <if test="mmSort != null">
+        #{mmSort,jdbcType=INTEGER},
+      </if>
+      <if test="mmRemark != null">
+        #{mmRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="mmEnableEdit != null">
+        #{mmEnableEdit,jdbcType=BIT},
+      </if>
+      <if test="mmEnableDelete != null">
+        #{mmEnableDelete,jdbcType=BIT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xweb.starter.modules.security.domain.entity.MastMenuExample" resultType="java.lang.Long">
+    select count(*) from mast_menu
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update mast_menu
+    <set>
+      <if test="row.id != null">
+        id = #{row.id,jdbcType=BIGINT},
+      </if>
+      <if test="row.mmId != null">
+        mm_id = #{row.mmId,jdbcType=INTEGER},
+      </if>
+      <if test="row.mmParentId != null">
+        mm_parent_id = #{row.mmParentId,jdbcType=INTEGER},
+      </if>
+      <if test="row.mmType != null">
+        mm_type = #{row.mmType,jdbcType=SMALLINT},
+      </if>
+      <if test="row.mmPath != null">
+        mm_path = #{row.mmPath,jdbcType=VARCHAR},
+      </if>
+      <if test="row.mmState != null">
+        mm_state = #{row.mmState,jdbcType=SMALLINT},
+      </if>
+      <if test="row.mmIcon != null">
+        mm_icon = #{row.mmIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="row.mmName != null">
+        mm_name = #{row.mmName,jdbcType=OTHER},
+      </if>
+      <if test="row.mmCode != null">
+        mm_code = #{row.mmCode,jdbcType=VARCHAR},
+      </if>
+      <if test="row.mmLevelChain != null">
+        mm_level_chain = #{row.mmLevelChain,jdbcType=VARCHAR},
+      </if>
+      <if test="row.mmLevel != null">
+        mm_level = #{row.mmLevel,jdbcType=INTEGER},
+      </if>
+      <if test="row.mmSort != null">
+        mm_sort = #{row.mmSort,jdbcType=INTEGER},
+      </if>
+      <if test="row.mmRemark != null">
+        mm_remark = #{row.mmRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="row.mmEnableEdit != null">
+        mm_enable_edit = #{row.mmEnableEdit,jdbcType=BIT},
+      </if>
+      <if test="row.mmEnableDelete != null">
+        mm_enable_delete = #{row.mmEnableDelete,jdbcType=BIT},
+      </if>
+      <if test="row.createTime != null">
+        create_time = #{row.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="row.updateTime != null">
+        update_time = #{row.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update mast_menu
+    set id = #{row.id,jdbcType=BIGINT},
+      mm_id = #{row.mmId,jdbcType=INTEGER},
+      mm_parent_id = #{row.mmParentId,jdbcType=INTEGER},
+      mm_type = #{row.mmType,jdbcType=SMALLINT},
+      mm_path = #{row.mmPath,jdbcType=VARCHAR},
+      mm_state = #{row.mmState,jdbcType=SMALLINT},
+      mm_icon = #{row.mmIcon,jdbcType=VARCHAR},
+      mm_name = #{row.mmName,jdbcType=OTHER},
+      mm_code = #{row.mmCode,jdbcType=VARCHAR},
+      mm_level_chain = #{row.mmLevelChain,jdbcType=VARCHAR},
+      mm_level = #{row.mmLevel,jdbcType=INTEGER},
+      mm_sort = #{row.mmSort,jdbcType=INTEGER},
+      mm_remark = #{row.mmRemark,jdbcType=VARCHAR},
+      mm_enable_edit = #{row.mmEnableEdit,jdbcType=BIT},
+      mm_enable_delete = #{row.mmEnableDelete,jdbcType=BIT},
+      create_time = #{row.createTime,jdbcType=TIMESTAMP},
+      update_time = #{row.updateTime,jdbcType=TIMESTAMP}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xweb.starter.modules.security.domain.entity.MastMenu">
+    update mast_menu
+    <set>
+      <if test="mmId != null">
+        mm_id = #{mmId,jdbcType=INTEGER},
+      </if>
+      <if test="mmParentId != null">
+        mm_parent_id = #{mmParentId,jdbcType=INTEGER},
+      </if>
+      <if test="mmType != null">
+        mm_type = #{mmType,jdbcType=SMALLINT},
+      </if>
+      <if test="mmPath != null">
+        mm_path = #{mmPath,jdbcType=VARCHAR},
+      </if>
+      <if test="mmState != null">
+        mm_state = #{mmState,jdbcType=SMALLINT},
+      </if>
+      <if test="mmIcon != null">
+        mm_icon = #{mmIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="mmName != null">
+        mm_name = #{mmName,jdbcType=OTHER},
+      </if>
+      <if test="mmCode != null">
+        mm_code = #{mmCode,jdbcType=VARCHAR},
+      </if>
+      <if test="mmLevelChain != null">
+        mm_level_chain = #{mmLevelChain,jdbcType=VARCHAR},
+      </if>
+      <if test="mmLevel != null">
+        mm_level = #{mmLevel,jdbcType=INTEGER},
+      </if>
+      <if test="mmSort != null">
+        mm_sort = #{mmSort,jdbcType=INTEGER},
+      </if>
+      <if test="mmRemark != null">
+        mm_remark = #{mmRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="mmEnableEdit != null">
+        mm_enable_edit = #{mmEnableEdit,jdbcType=BIT},
+      </if>
+      <if test="mmEnableDelete != null">
+        mm_enable_delete = #{mmEnableDelete,jdbcType=BIT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xweb.starter.modules.security.domain.entity.MastMenu">
+    update mast_menu
+    set mm_id = #{mmId,jdbcType=INTEGER},
+      mm_parent_id = #{mmParentId,jdbcType=INTEGER},
+      mm_type = #{mmType,jdbcType=SMALLINT},
+      mm_path = #{mmPath,jdbcType=VARCHAR},
+      mm_state = #{mmState,jdbcType=SMALLINT},
+      mm_icon = #{mmIcon,jdbcType=VARCHAR},
+      mm_name = #{mmName,jdbcType=OTHER},
+      mm_code = #{mmCode,jdbcType=VARCHAR},
+      mm_level_chain = #{mmLevelChain,jdbcType=VARCHAR},
+      mm_level = #{mmLevel,jdbcType=INTEGER},
+      mm_sort = #{mmSort,jdbcType=INTEGER},
+      mm_remark = #{mmRemark,jdbcType=VARCHAR},
+      mm_enable_edit = #{mmEnableEdit,jdbcType=BIT},
+      mm_enable_delete = #{mmEnableDelete,jdbcType=BIT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
