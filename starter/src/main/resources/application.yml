@@ -76,4 +76,26 @@ mybatis:
     lazy-loading-enabled: on
     local-cache-scope: session
     use-column-label: on
-  type-handlers-package: com.xweb.common.typehandler
+  type-handlers-package: com.xweb.starter.common.typehandler
+
+security:
+  csrf-ignore-url-patterns:
+    - /
+    - /error
+    - /adminlte/**
+    - /plugins/**
+    - /img/**
+    - /api/**
+  white-url-patterns:
+    - /login
+    - /
+    - /error
+    - /adminlte/**
+    - /plugins/**
+    - /img/**
+  form-login:
+    username-parameter: username
+    password-parameter: password
+    login-page: /login
+    login-processing-url: /login
+    defaultSuccessUrl: /dashboard

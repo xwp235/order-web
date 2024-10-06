@@ -4,9 +4,10 @@
   <resultMap id="BaseResultMap" type="com.xweb.starter.modules.security.domain.entity.MastRole">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="mr_id" jdbcType="VARCHAR" property="mrId" />
-    <result column="mr_name" jdbcType="OTHER" property="mrName" />
+    <result column="mr_name" jdbcType="OTHER" property="mrName" typeHandler="com.xweb.starter.common.typehandler.MultiLanguageTypeHandler" />
     <result column="mr_enable_delete" jdbcType="BIT" property="mrEnableDelete" />
     <result column="mr_enable_edit" jdbcType="BIT" property="mrEnableEdit" />
+    <result column="mr_weight" jdbcType="INTEGER" property="mrWeight" />
     <result column="mr_remark" jdbcType="VARCHAR" property="mrRemark" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -31,6 +32,25 @@
                   and ${criterion.condition}
                   <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+            <foreach collection="criteria.mrNameCriteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler} and #{criterion.secondValue,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler}
                   </foreach>
                 </when>
               </choose>
@@ -64,13 +84,33 @@
                 </when>
               </choose>
             </foreach>
+            <foreach collection="criteria.mrNameCriteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler} and #{criterion.secondValue,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
           </trim>
         </if>
       </foreach>
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, mr_id, mr_name, mr_enable_delete, mr_enable_edit, mr_remark, create_time, update_time
+    id, mr_id, mr_name, mr_enable_delete, mr_enable_edit, mr_weight, mr_remark, create_time, 
+    update_time
   </sql>
   <select id="selectByExample" parameterType="com.xweb.starter.modules.security.domain.entity.MastRoleExample" resultMap="BaseResultMap">
     select
@@ -87,7 +127,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select
+    select 
     <include refid="Base_Column_List" />
     from mast_role
     where id = #{id,jdbcType=BIGINT}
@@ -103,12 +143,14 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.xweb.starter.modules.security.domain.entity.MastRole">
-    insert into mast_role (id, mr_id, mr_name,
-      mr_enable_delete, mr_enable_edit, mr_remark,
-      create_time, update_time)
-    values (#{id,jdbcType=BIGINT}, #{mrId,jdbcType=VARCHAR}, #{mrName,jdbcType=OTHER},
-      #{mrEnableDelete,jdbcType=BIT}, #{mrEnableEdit,jdbcType=BIT}, #{mrRemark,jdbcType=VARCHAR},
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+    insert into mast_role (id, mr_id, mr_name, 
+      mr_enable_delete, mr_enable_edit, mr_weight, 
+      mr_remark, create_time, update_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{mrId,jdbcType=VARCHAR}, #{mrName,jdbcType=OTHER,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler}, 
+      #{mrEnableDelete,jdbcType=BIT}, #{mrEnableEdit,jdbcType=BIT}, #{mrWeight,jdbcType=INTEGER}, 
+      #{mrRemark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.xweb.starter.modules.security.domain.entity.MastRole">
     insert into mast_role
@@ -128,6 +170,9 @@
       <if test="mrEnableEdit != null">
         mr_enable_edit,
       </if>
+      <if test="mrWeight != null">
+        mr_weight,
+      </if>
       <if test="mrRemark != null">
         mr_remark,
       </if>
@@ -146,13 +191,16 @@
         #{mrId,jdbcType=VARCHAR},
       </if>
       <if test="mrName != null">
-        #{mrName,jdbcType=OTHER},
+        #{mrName,jdbcType=OTHER,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler},
       </if>
       <if test="mrEnableDelete != null">
         #{mrEnableDelete,jdbcType=BIT},
       </if>
       <if test="mrEnableEdit != null">
         #{mrEnableEdit,jdbcType=BIT},
+      </if>
+      <if test="mrWeight != null">
+        #{mrWeight,jdbcType=INTEGER},
       </if>
       <if test="mrRemark != null">
         #{mrRemark,jdbcType=VARCHAR},
@@ -181,13 +229,16 @@
         mr_id = #{row.mrId,jdbcType=VARCHAR},
       </if>
       <if test="row.mrName != null">
-        mr_name = #{row.mrName,jdbcType=OTHER},
+        mr_name = #{row.mrName,jdbcType=OTHER,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler},
       </if>
       <if test="row.mrEnableDelete != null">
         mr_enable_delete = #{row.mrEnableDelete,jdbcType=BIT},
       </if>
       <if test="row.mrEnableEdit != null">
         mr_enable_edit = #{row.mrEnableEdit,jdbcType=BIT},
+      </if>
+      <if test="row.mrWeight != null">
+        mr_weight = #{row.mrWeight,jdbcType=INTEGER},
       </if>
       <if test="row.mrRemark != null">
         mr_remark = #{row.mrRemark,jdbcType=VARCHAR},
@@ -207,9 +258,10 @@
     update mast_role
     set id = #{row.id,jdbcType=BIGINT},
       mr_id = #{row.mrId,jdbcType=VARCHAR},
-      mr_name = #{row.mrName,jdbcType=OTHER},
+      mr_name = #{row.mrName,jdbcType=OTHER,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler},
       mr_enable_delete = #{row.mrEnableDelete,jdbcType=BIT},
       mr_enable_edit = #{row.mrEnableEdit,jdbcType=BIT},
+      mr_weight = #{row.mrWeight,jdbcType=INTEGER},
       mr_remark = #{row.mrRemark,jdbcType=VARCHAR},
       create_time = #{row.createTime,jdbcType=TIMESTAMP},
       update_time = #{row.updateTime,jdbcType=TIMESTAMP}
@@ -224,13 +276,16 @@
         mr_id = #{mrId,jdbcType=VARCHAR},
       </if>
       <if test="mrName != null">
-        mr_name = #{mrName,jdbcType=OTHER},
+        mr_name = #{mrName,jdbcType=OTHER,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler},
       </if>
       <if test="mrEnableDelete != null">
         mr_enable_delete = #{mrEnableDelete,jdbcType=BIT},
       </if>
       <if test="mrEnableEdit != null">
         mr_enable_edit = #{mrEnableEdit,jdbcType=BIT},
+      </if>
+      <if test="mrWeight != null">
+        mr_weight = #{mrWeight,jdbcType=INTEGER},
       </if>
       <if test="mrRemark != null">
         mr_remark = #{mrRemark,jdbcType=VARCHAR},
@@ -247,9 +302,10 @@
   <update id="updateByPrimaryKey" parameterType="com.xweb.starter.modules.security.domain.entity.MastRole">
     update mast_role
     set mr_id = #{mrId,jdbcType=VARCHAR},
-      mr_name = #{mrName,jdbcType=OTHER},
+      mr_name = #{mrName,jdbcType=OTHER,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler},
       mr_enable_delete = #{mrEnableDelete,jdbcType=BIT},
       mr_enable_edit = #{mrEnableEdit,jdbcType=BIT},
+      mr_weight = #{mrWeight,jdbcType=INTEGER},
       mr_remark = #{mrRemark,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}

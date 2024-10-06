@@ -3,7 +3,6 @@ package com.xweb.starter.modules.security.mapper;
 import com.xweb.starter.modules.security.domain.entity.MastRole;
 import com.xweb.starter.modules.security.domain.entity.MastRoleExample;
 import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 
 public interface MastRoleMapper {

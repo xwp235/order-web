@@ -9,7 +9,7 @@
     <result column="mm_path" jdbcType="VARCHAR" property="mmPath" />
     <result column="mm_state" jdbcType="SMALLINT" property="mmState" />
     <result column="mm_icon" jdbcType="VARCHAR" property="mmIcon" />
-    <result column="mm_name" jdbcType="OTHER" property="mmName" />
+    <result column="mm_name" jdbcType="OTHER" property="mmName" typeHandler="com.xweb.starter.common.typehandler.MultiLanguageTypeHandler" />
     <result column="mm_code" jdbcType="VARCHAR" property="mmCode" />
     <result column="mm_level_chain" jdbcType="VARCHAR" property="mmLevelChain" />
     <result column="mm_level" jdbcType="INTEGER" property="mmLevel" />
@@ -44,6 +44,25 @@
                 </when>
               </choose>
             </foreach>
+            <foreach collection="criteria.mmNameCriteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler} and #{criterion.secondValue,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
           </trim>
         </if>
       </foreach>
@@ -73,13 +92,32 @@
                 </when>
               </choose>
             </foreach>
+            <foreach collection="criteria.mmNameCriteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler} and #{criterion.secondValue,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
           </trim>
         </if>
       </foreach>
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, mm_id, mm_parent_id, mm_type, mm_path, mm_state, mm_icon, mm_name, mm_code, mm_level_chain,
+    id, mm_id, mm_parent_id, mm_type, mm_path, mm_state, mm_icon, mm_name, mm_code, mm_level_chain, 
     mm_level, mm_sort, mm_remark, mm_enable_edit, mm_enable_delete, create_time, update_time
   </sql>
   <select id="selectByExample" parameterType="com.xweb.starter.modules.security.domain.entity.MastMenuExample" resultMap="BaseResultMap">
@@ -97,7 +135,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select
+    select 
     <include refid="Base_Column_List" />
     from mast_menu
     where id = #{id,jdbcType=BIGINT}
@@ -113,18 +151,20 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.xweb.starter.modules.security.domain.entity.MastMenu">
-    insert into mast_menu (id, mm_id, mm_parent_id,
-      mm_type, mm_path, mm_state,
-      mm_icon, mm_name, mm_code,
-      mm_level_chain, mm_level, mm_sort,
-      mm_remark, mm_enable_edit, mm_enable_delete,
-      create_time, update_time)
-    values (#{id,jdbcType=BIGINT}, #{mmId,jdbcType=INTEGER}, #{mmParentId,jdbcType=INTEGER},
-      #{mmType,jdbcType=SMALLINT}, #{mmPath,jdbcType=VARCHAR}, #{mmState,jdbcType=SMALLINT},
-      #{mmIcon,jdbcType=VARCHAR}, #{mmName,jdbcType=OTHER}, #{mmCode,jdbcType=VARCHAR},
-      #{mmLevelChain,jdbcType=VARCHAR}, #{mmLevel,jdbcType=INTEGER}, #{mmSort,jdbcType=INTEGER},
-      #{mmRemark,jdbcType=VARCHAR}, #{mmEnableEdit,jdbcType=BIT}, #{mmEnableDelete,jdbcType=BIT},
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+    insert into mast_menu (id, mm_id, mm_parent_id, 
+      mm_type, mm_path, mm_state, 
+      mm_icon, mm_name, 
+      mm_code, mm_level_chain, mm_level, 
+      mm_sort, mm_remark, mm_enable_edit, 
+      mm_enable_delete, create_time, update_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{mmId,jdbcType=INTEGER}, #{mmParentId,jdbcType=INTEGER}, 
+      #{mmType,jdbcType=SMALLINT}, #{mmPath,jdbcType=VARCHAR}, #{mmState,jdbcType=SMALLINT}, 
+      #{mmIcon,jdbcType=VARCHAR}, #{mmName,jdbcType=OTHER,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler}, 
+      #{mmCode,jdbcType=VARCHAR}, #{mmLevelChain,jdbcType=VARCHAR}, #{mmLevel,jdbcType=INTEGER}, 
+      #{mmSort,jdbcType=INTEGER}, #{mmRemark,jdbcType=VARCHAR}, #{mmEnableEdit,jdbcType=BIT}, 
+      #{mmEnableDelete,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.xweb.starter.modules.security.domain.entity.MastMenu">
     insert into mast_menu
@@ -204,7 +244,7 @@
         #{mmIcon,jdbcType=VARCHAR},
       </if>
       <if test="mmName != null">
-        #{mmName,jdbcType=OTHER},
+        #{mmName,jdbcType=OTHER,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler},
       </if>
       <if test="mmCode != null">
         #{mmCode,jdbcType=VARCHAR},
@@ -266,7 +306,7 @@
         mm_icon = #{row.mmIcon,jdbcType=VARCHAR},
       </if>
       <if test="row.mmName != null">
-        mm_name = #{row.mmName,jdbcType=OTHER},
+        mm_name = #{row.mmName,jdbcType=OTHER,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler},
       </if>
       <if test="row.mmCode != null">
         mm_code = #{row.mmCode,jdbcType=VARCHAR},
@@ -309,7 +349,7 @@
       mm_path = #{row.mmPath,jdbcType=VARCHAR},
       mm_state = #{row.mmState,jdbcType=SMALLINT},
       mm_icon = #{row.mmIcon,jdbcType=VARCHAR},
-      mm_name = #{row.mmName,jdbcType=OTHER},
+      mm_name = #{row.mmName,jdbcType=OTHER,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler},
       mm_code = #{row.mmCode,jdbcType=VARCHAR},
       mm_level_chain = #{row.mmLevelChain,jdbcType=VARCHAR},
       mm_level = #{row.mmLevel,jdbcType=INTEGER},
@@ -345,7 +385,7 @@
         mm_icon = #{mmIcon,jdbcType=VARCHAR},
       </if>
       <if test="mmName != null">
-        mm_name = #{mmName,jdbcType=OTHER},
+        mm_name = #{mmName,jdbcType=OTHER,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler},
       </if>
       <if test="mmCode != null">
         mm_code = #{mmCode,jdbcType=VARCHAR},
@@ -385,7 +425,7 @@
       mm_path = #{mmPath,jdbcType=VARCHAR},
       mm_state = #{mmState,jdbcType=SMALLINT},
       mm_icon = #{mmIcon,jdbcType=VARCHAR},
-      mm_name = #{mmName,jdbcType=OTHER},
+      mm_name = #{mmName,jdbcType=OTHER,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler},
       mm_code = #{mmCode,jdbcType=VARCHAR},
       mm_level_chain = #{mmLevelChain,jdbcType=VARCHAR},
       mm_level = #{mmLevel,jdbcType=INTEGER},

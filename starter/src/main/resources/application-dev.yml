@@ -19,3 +19,11 @@ spring:
       schema: public
   thymeleaf:
     cache: off
+#logging:
+#  level:
+#    com:
+#      xweb:
+#        starter:
+#          modules:
+#            security:
+#              mapper: TRACE

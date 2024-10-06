@@ -3,7 +3,7 @@ package com.xweb.starter.modules.security.domain.entity;
 import java.time.ZonedDateTime;
 
 /**
-* Created by Mybatis Generator on 2024/10/03 19:22
+* Created by Mybatis Generator on 2024/10/05 09:56
 */
 public class MastAccount {
     /**
@@ -60,11 +60,11 @@ public class MastAccount {
 
     /**
      */
-    private ZonedDateTime createdTime;
+    private ZonedDateTime createTime;
 
     /**
      */
-    private ZonedDateTime updatedTime;
+    private ZonedDateTime updateTime;
 
     public Long getId() {
         return id;
@@ -170,20 +170,20 @@ public class MastAccount {
         this.enabled = enabled;
     }
 
-    public ZonedDateTime getCreatedTime() {
-        return createdTime;
+    public ZonedDateTime getCreateTime() {
+        return createTime;
     }
 
-    public void setCreatedTime(ZonedDateTime createdTime) {
-        this.createdTime = createdTime;
+    public void setCreateTime(ZonedDateTime createTime) {
+        this.createTime = createTime;
     }
 
-    public ZonedDateTime getUpdatedTime() {
-        return updatedTime;
+    public ZonedDateTime getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdatedTime(ZonedDateTime updatedTime) {
-        this.updatedTime = updatedTime;
+    public void setUpdateTime(ZonedDateTime updateTime) {
+        this.updateTime = updateTime;
     }
 
     @Override
@@ -205,8 +205,8 @@ public class MastAccount {
         sb.append(", mfaKey=").append(mfaKey);
         sb.append(", usingMfa=").append(usingMfa);
         sb.append(", enabled=").append(enabled);
-        sb.append(", createdTime=").append(createdTime);
-        sb.append(", updatedTime=").append(updatedTime);
+        sb.append(", createTime=").append(createTime);
+        sb.append(", updateTime=").append(updateTime);
         sb.append("]");
         return sb.toString();
     }

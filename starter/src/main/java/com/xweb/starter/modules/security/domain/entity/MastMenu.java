@@ -1,9 +1,10 @@
 package com.xweb.starter.modules.security.domain.entity;
 
+import com.xweb.starter.common.dbmappingtypes.MultiLanguage;
 import java.time.ZonedDateTime;
 
 /**
-* Created by Mybatis Generator on 2024/10/03 19:22
+* Created by Mybatis Generator on 2024/10/05 09:56
 */
 public class MastMenu {
     /**
@@ -21,7 +22,7 @@ public class MastMenu {
     private Integer mmParentId;
 
     /**
-     * 菜单类型，菜单=1 按钮=2 页面=3
+     * 菜单类型，菜单=1 按钮=2 页面=3 链接=4
      */
     private Short mmType;
 
@@ -43,7 +44,7 @@ public class MastMenu {
     /**
      * 菜单名称，支持多语言:{"ja-JP":"メニュー１","en-US":"Menu1","zh-CN":"菜单1"}
      */
-    private Object mmName;
+    private MultiLanguage mmName;
 
     /**
      * 每项菜单的唯一标识
@@ -142,11 +143,11 @@ public class MastMenu {
         this.mmIcon = mmIcon;
     }
 
-    public Object getMmName() {
+    public MultiLanguage getMmName() {
         return mmName;
     }
 
-    public void setMmName(Object mmName) {
+    public void setMmName(MultiLanguage mmName) {
         this.mmName = mmName;
     }
 

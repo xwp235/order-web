@@ -41,7 +41,7 @@
 
         <!-- domain类的位置 targetProject是相对pom.xml的路径-->
         <javaModelGenerator targetProject="../starter/src/main/java"
-                            targetPackage="com.xweb.modules.security.domain.entity"/>
+                            targetPackage="com.xweb.starter.modules.security.domain.entity"/>
 
         <!-- mapper xml的位置 targetProject是相对pom.xml的路径 -->
         <sqlMapGenerator targetProject="../starter/src/main/resources"
@@ -49,12 +49,16 @@
 
         <!-- mapper类的位置 targetProject是相对pom.xml的路径 -->
         <javaClientGenerator targetProject="../starter/src/main/java"
-                             targetPackage="com.xweb.modules.security.mapper"
+                             targetPackage="com.xweb.starter.modules.security.mapper"
                              type="XMLMAPPER"/>
 
-        <table tableName="mast_menu" domainObjectName="MastMenu"/>
-        <table tableName="mast_role" domainObjectName="MastRole"/>
+        <table tableName="mast_menu" domainObjectName="MastMenu">
+            <columnOverride column="mm_name" javaType="com.xweb.starter.common.dbmappingtypes.MultiLanguage" typeHandler="com.xweb.starter.common.typehandler.MultiLanguageTypeHandler"/>
+        </table>
+        <table tableName="mast_role" domainObjectName="MastRole">
+            <columnOverride column="mr_name" javaType="com.xweb.starter.common.dbmappingtypes.MultiLanguage" typeHandler="com.xweb.starter.common.typehandler.MultiLanguageTypeHandler"/>
+        </table>
         <table tableName="mast_account" domainObjectName="MastAccount"/>
-
+        <table tableName="mast_url_mapping_btn_perms" domainObjectName="MastUrlMappingBtnPerms"/>
     </context>
 </generatorConfiguration>

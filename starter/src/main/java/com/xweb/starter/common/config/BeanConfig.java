@@ -15,7 +15,7 @@ import java.time.Duration;
 
 @Configuration
 @MapperScan(basePackages = {
-        "com.xweb.starter.modules.security.mapper"
+  "com.xweb.starter.modules.security.mapper"
 })
 @EnableAsync
 public class BeanConfig {

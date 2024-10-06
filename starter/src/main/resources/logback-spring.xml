@@ -46,7 +46,7 @@
         <root level="INFO">
             <appender-ref ref="STDOUT"/>
         </root>
-        <logger name="com.xweb.modules.security.mapper" level="TRACE" additivity="true" />
+        <logger name="com.xweb.starter.modules.security.mapper" level="TRACE" additivity="true" />
     </springProfile>
 
 </configuration>

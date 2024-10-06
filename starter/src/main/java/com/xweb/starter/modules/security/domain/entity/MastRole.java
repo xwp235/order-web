@@ -1,9 +1,10 @@
 package com.xweb.starter.modules.security.domain.entity;
 
+import com.xweb.starter.common.dbmappingtypes.MultiLanguage;
 import java.time.ZonedDateTime;
 
 /**
-* Created by Mybatis Generator on 2024/10/03 19:22
+* Created by Mybatis Generator on 2024/10/05 09:56
 */
 public class MastRole {
     /**
@@ -16,9 +17,9 @@ public class MastRole {
     private String mrId;
 
     /**
-     * 角色名称，支持多语言:{"ja-JP":"スーパー管理者","en-US":"Super Admin","zh-CN":"超级管理员"}
+     * 角色名称，支持多语言:{"ja_JP":"スーパー管理者","en_US":"Super Admin","zh_CN":"超级管理员"}
      */
-    private Object mrName;
+    private MultiLanguage mrName;
 
     /**
      * 是否可以删除角色 true=可以 false=不可以
@@ -29,6 +30,10 @@ public class MastRole {
      * 是否可以修改角色信息 true=可以 false=不可以
      */
     private Boolean mrEnableEdit;
+
+    /**
+     */
+    private Integer mrWeight;
 
     /**
      */
@@ -58,11 +63,11 @@ public class MastRole {
         this.mrId = mrId;
     }
 
-    public Object getMrName() {
+    public MultiLanguage getMrName() {
         return mrName;
     }
 
-    public void setMrName(Object mrName) {
+    public void setMrName(MultiLanguage mrName) {
         this.mrName = mrName;
     }
 
@@ -80,6 +85,14 @@ public class MastRole {
 
     public void setMrEnableEdit(Boolean mrEnableEdit) {
         this.mrEnableEdit = mrEnableEdit;
+    }
+
+    public Integer getMrWeight() {
+        return mrWeight;
+    }
+
+    public void setMrWeight(Integer mrWeight) {
+        this.mrWeight = mrWeight;
     }
 
     public String getMrRemark() {
@@ -117,6 +130,7 @@ public class MastRole {
         sb.append(", mrName=").append(mrName);
         sb.append(", mrEnableDelete=").append(mrEnableDelete);
         sb.append(", mrEnableEdit=").append(mrEnableEdit);
+        sb.append(", mrWeight=").append(mrWeight);
         sb.append(", mrRemark=").append(mrRemark);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);

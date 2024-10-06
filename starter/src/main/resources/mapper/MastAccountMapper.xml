@@ -15,8 +15,8 @@
     <result column="mfa_key" jdbcType="VARCHAR" property="mfaKey" />
     <result column="using_mfa" jdbcType="BIT" property="usingMfa" />
     <result column="enabled" jdbcType="BIT" property="enabled" />
-    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
-    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -77,8 +77,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, avatar, nickname, username, mobile, email, "password", account_expired, account_locked,
-    password_expired, mfa_key, using_mfa, enabled, created_time, updated_time
+    id, avatar, nickname, username, mobile, email, "password", account_expired, account_locked, 
+    password_expired, mfa_key, using_mfa, enabled, create_time, update_time
   </sql>
   <select id="selectByExample" parameterType="com.xweb.starter.modules.security.domain.entity.MastAccountExample" resultMap="BaseResultMap">
     select
@@ -95,7 +95,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select
+    select 
     <include refid="Base_Column_List" />
     from mast_account
     where id = #{id,jdbcType=BIGINT}
@@ -111,17 +111,17 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.xweb.starter.modules.security.domain.entity.MastAccount">
-    insert into mast_account (id, avatar, nickname,
-      username, mobile, email,
-      "password", account_expired, account_locked,
-      password_expired, mfa_key, using_mfa,
-      enabled, created_time, updated_time
+    insert into mast_account (id, avatar, nickname, 
+      username, mobile, email, 
+      "password", account_expired, account_locked, 
+      password_expired, mfa_key, using_mfa, 
+      enabled, create_time, update_time
       )
-    values (#{id,jdbcType=BIGINT}, #{avatar,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR},
-      #{username,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
-      #{password,jdbcType=VARCHAR}, #{accountExpired,jdbcType=BIT}, #{accountLocked,jdbcType=BIT},
-      #{passwordExpired,jdbcType=BIT}, #{mfaKey,jdbcType=VARCHAR}, #{usingMfa,jdbcType=BIT},
-      #{enabled,jdbcType=BIT}, #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}
+    values (#{id,jdbcType=BIGINT}, #{avatar,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
+      #{username,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{accountExpired,jdbcType=BIT}, #{accountLocked,jdbcType=BIT}, 
+      #{passwordExpired,jdbcType=BIT}, #{mfaKey,jdbcType=VARCHAR}, #{usingMfa,jdbcType=BIT}, 
+      #{enabled,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.xweb.starter.modules.security.domain.entity.MastAccount">
@@ -166,11 +166,11 @@
       <if test="enabled != null">
         enabled,
       </if>
-      <if test="createdTime != null">
-        created_time,
+      <if test="createTime != null">
+        create_time,
       </if>
-      <if test="updatedTime != null">
-        updated_time,
+      <if test="updateTime != null">
+        update_time,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -213,11 +213,11 @@
       <if test="enabled != null">
         #{enabled,jdbcType=BIT},
       </if>
-      <if test="createdTime != null">
-        #{createdTime,jdbcType=TIMESTAMP},
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updatedTime != null">
-        #{updatedTime,jdbcType=TIMESTAMP},
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -269,11 +269,11 @@
       <if test="row.enabled != null">
         enabled = #{row.enabled,jdbcType=BIT},
       </if>
-      <if test="row.createdTime != null">
-        created_time = #{row.createdTime,jdbcType=TIMESTAMP},
+      <if test="row.createTime != null">
+        create_time = #{row.createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="row.updatedTime != null">
-        updated_time = #{row.updatedTime,jdbcType=TIMESTAMP},
+      <if test="row.updateTime != null">
+        update_time = #{row.updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="example != null">
@@ -295,8 +295,8 @@
       mfa_key = #{row.mfaKey,jdbcType=VARCHAR},
       using_mfa = #{row.usingMfa,jdbcType=BIT},
       enabled = #{row.enabled,jdbcType=BIT},
-      created_time = #{row.createdTime,jdbcType=TIMESTAMP},
-      updated_time = #{row.updatedTime,jdbcType=TIMESTAMP}
+      create_time = #{row.createTime,jdbcType=TIMESTAMP},
+      update_time = #{row.updateTime,jdbcType=TIMESTAMP}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -340,11 +340,11 @@
       <if test="enabled != null">
         enabled = #{enabled,jdbcType=BIT},
       </if>
-      <if test="createdTime != null">
-        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updatedTime != null">
-        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -363,8 +363,8 @@
       mfa_key = #{mfaKey,jdbcType=VARCHAR},
       using_mfa = #{usingMfa,jdbcType=BIT},
       enabled = #{enabled,jdbcType=BIT},
-      created_time = #{createdTime,jdbcType=TIMESTAMP},
-      updated_time = #{updatedTime,jdbcType=TIMESTAMP}
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

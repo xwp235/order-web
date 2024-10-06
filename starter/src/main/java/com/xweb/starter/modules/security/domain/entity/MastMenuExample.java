@@ -1,5 +1,6 @@
 package com.xweb.starter.modules.security.domain.entity;
 
+import com.xweb.starter.common.dbmappingtypes.MultiLanguage;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -65,19 +66,50 @@ public class MastMenuExample {
     }
 
     protected abstract static class GeneratedCriteria {
+        protected List<Criterion> mmNameCriteria;
+
+        protected List<Criterion> allCriteria;
+
         protected List<Criterion> criteria;
 
         protected GeneratedCriteria() {
             super();
             criteria = new ArrayList<>();
+            mmNameCriteria = new ArrayList<>();
+        }
+
+        public List<Criterion> getMmNameCriteria() {
+            return mmNameCriteria;
+        }
+
+        protected void addMmNameCriterion(String condition, Object value, String property) {
+            if (value == null) {
+                throw new RuntimeException("Value for " + property + " cannot be null");
+            }
+            mmNameCriteria.add(new Criterion(condition, value, "com.xweb.starter.common.typehandler.MultiLanguageTypeHandler"));
+            allCriteria = null;
+        }
+
+        protected void addMmNameCriterion(String condition, MultiLanguage value1, MultiLanguage value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            mmNameCriteria.add(new Criterion(condition, value1, value2, "com.xweb.starter.common.typehandler.MultiLanguageTypeHandler"));
+            allCriteria = null;
         }
 
         public boolean isValid() {
-            return criteria.size() > 0;
+            return criteria.size() > 0
+                || mmNameCriteria.size() > 0;
         }
 
         public List<Criterion> getAllCriteria() {
-            return criteria;
+            if (allCriteria == null) {
+                allCriteria = new ArrayList<>();
+                allCriteria.addAll(criteria);
+                allCriteria.addAll(mmNameCriteria);
+            }
+            return allCriteria;
         }
 
         public List<Criterion> getCriteria() {
@@ -89,6 +121,7 @@ public class MastMenuExample {
                 throw new RuntimeException("Value for condition cannot be null");
             }
             criteria.add(new Criterion(condition));
+            allCriteria = null;
         }
 
         protected void addCriterion(String condition, Object value, String property) {
@@ -96,6 +129,7 @@ public class MastMenuExample {
                 throw new RuntimeException("Value for " + property + " cannot be null");
             }
             criteria.add(new Criterion(condition, value));
+            allCriteria = null;
         }
 
         protected void addCriterion(String condition, Object value1, Object value2, String property) {
@@ -103,6 +137,7 @@ public class MastMenuExample {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
             criteria.add(new Criterion(condition, value1, value2));
+            allCriteria = null;
         }
 
         public Criteria andIdIsNull() {
@@ -555,53 +590,53 @@ public class MastMenuExample {
             return (Criteria) this;
         }
 
-        public Criteria andMmNameEqualTo(Object value) {
-            addCriterion("mm_name =", value, "mmName");
+        public Criteria andMmNameEqualTo(MultiLanguage value) {
+            addMmNameCriterion("mm_name =", value, "mmName");
             return (Criteria) this;
         }
 
-        public Criteria andMmNameNotEqualTo(Object value) {
-            addCriterion("mm_name <>", value, "mmName");
+        public Criteria andMmNameNotEqualTo(MultiLanguage value) {
+            addMmNameCriterion("mm_name <>", value, "mmName");
             return (Criteria) this;
         }
 
-        public Criteria andMmNameGreaterThan(Object value) {
-            addCriterion("mm_name >", value, "mmName");
+        public Criteria andMmNameGreaterThan(MultiLanguage value) {
+            addMmNameCriterion("mm_name >", value, "mmName");
             return (Criteria) this;
         }
 
-        public Criteria andMmNameGreaterThanOrEqualTo(Object value) {
-            addCriterion("mm_name >=", value, "mmName");
+        public Criteria andMmNameGreaterThanOrEqualTo(MultiLanguage value) {
+            addMmNameCriterion("mm_name >=", value, "mmName");
             return (Criteria) this;
         }
 
-        public Criteria andMmNameLessThan(Object value) {
-            addCriterion("mm_name <", value, "mmName");
+        public Criteria andMmNameLessThan(MultiLanguage value) {
+            addMmNameCriterion("mm_name <", value, "mmName");
             return (Criteria) this;
         }
 
-        public Criteria andMmNameLessThanOrEqualTo(Object value) {
-            addCriterion("mm_name <=", value, "mmName");
+        public Criteria andMmNameLessThanOrEqualTo(MultiLanguage value) {
+            addMmNameCriterion("mm_name <=", value, "mmName");
             return (Criteria) this;
         }
 
-        public Criteria andMmNameIn(List<Object> values) {
-            addCriterion("mm_name in", values, "mmName");
+        public Criteria andMmNameIn(List<MultiLanguage> values) {
+            addMmNameCriterion("mm_name in", values, "mmName");
             return (Criteria) this;
         }
 
-        public Criteria andMmNameNotIn(List<Object> values) {
-            addCriterion("mm_name not in", values, "mmName");
+        public Criteria andMmNameNotIn(List<MultiLanguage> values) {
+            addMmNameCriterion("mm_name not in", values, "mmName");
             return (Criteria) this;
         }
 
-        public Criteria andMmNameBetween(Object value1, Object value2) {
-            addCriterion("mm_name between", value1, value2, "mmName");
+        public Criteria andMmNameBetween(MultiLanguage value1, MultiLanguage value2) {
+            addMmNameCriterion("mm_name between", value1, value2, "mmName");
             return (Criteria) this;
         }
 
-        public Criteria andMmNameNotBetween(Object value1, Object value2) {
-            addCriterion("mm_name not between", value1, value2, "mmName");
+        public Criteria andMmNameNotBetween(MultiLanguage value1, MultiLanguage value2) {
+            addMmNameCriterion("mm_name not between", value1, value2, "mmName");
             return (Criteria) this;
         }
 
