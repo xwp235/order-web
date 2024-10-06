@@ -1,6 +1,7 @@
 package com.xweb.starter.modules.security.config;
 
 import com.xweb.starter.common.constants.Constants;
+import com.xweb.starter.common.filter.LogbackMDIdFilter;
 import com.xweb.starter.modules.security.config.authorization.CompositeAuthorizationManager;
 import com.xweb.starter.modules.security.config.metadatasource.PermissionMetadataSource;
 import com.xweb.starter.modules.security.config.properties.SecurityProperties;
@@ -39,6 +40,7 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.savedrequest.NullRequestCache;
+import org.springframework.security.web.session.DisableEncodeUrlFilter;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 /**
@@ -59,7 +61,8 @@ public class SecurityConfig {
             SecurityContextRepository securityContextRepository,
             ApplicationContext applicationContext,
             PermissionMetadataSource metadataSource,
-            GrantedAuthoritiesMapper authoritiesMapper
+            GrantedAuthoritiesMapper authoritiesMapper,
+            LogbackMDIdFilter logbackMDIdFilter
     ) throws Exception {
 
         var authorizationFilter = new AuthorizationFilter(new CompositeAuthorizationManager(metadataSource,authoritiesMapper));
@@ -88,6 +91,8 @@ public class SecurityConfig {
 //                }
                 requests.anyRequest().authenticated();
             })
+            // 在安全链开始前加入logback的输出日志对应ID
+            .addFilterBefore(logbackMDIdFilter, DisableEncodeUrlFilter.class)
             // 配置自定义授权过滤器
             .addFilterBefore(authorizationFilter, AuthorizationFilter.class)
             // session并发登录控制

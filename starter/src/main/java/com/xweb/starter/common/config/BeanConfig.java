@@ -5,8 +5,10 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.github.benmanes.caffeine.cache.AsyncCache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
+import com.xweb.starter.common.filter.LogbackMDIdFilter;
 import com.xweb.starter.utils.LogUtil;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -66,6 +68,13 @@ public class BeanConfig {
                     LogUtil.warn("expired key: {}",key);
                     return key;
                 });
+    }
+
+    @Bean
+    FilterRegistrationBean<LogbackMDIdFilter> demoFilterRegistration(LogbackMDIdFilter filter) {
+        var registration = new FilterRegistrationBean<>(filter);
+        registration.setEnabled(false);
+        return registration;
     }
 
 }
