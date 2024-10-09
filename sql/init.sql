@@ -90,10 +90,10 @@ COMMENT ON COLUMN "public"."mast_role"."mr_enable_edit" IS '是否可以修改�
 
 INSERT INTO "public"."mast_role" ("id","mr_id", "mr_name", "mr_enable_delete", "mr_enable_edit","mr_weight", "mr_remark", "create_time", "update_time")
 VALUES
-(1, 'ADMIN', '{"ja_JP":"スーパー管理者","en_US":"Super Admin","zh_CN":"超级管理员"}','f','f',1000,NULL,'2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
-(2, 'MANAGER', '{"ja_JP":"標準管理者","en_US":"Standard Admin","zh_CN":"一般管理员"}','f','f',100,NULL,'2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
-(3, 'USER', '{"ja_JP":"クライアントユーザー","en_US":"Client User","zh_CN":"客户端用户"}','f','f',1,NULL,'2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
-(4, 'IMPORT_USER', '{"ja_JP":"導入担当者","en_US":"Import User","zh_CN":"导入人员"}','f','f',10,NULL,'2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09');
+(1, 'ROLE_ADMIN', '{"ja_JP":"スーパー管理者","en_US":"Super Admin","zh_CN":"超级管理员"}','f','f',1000,NULL,'2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
+(2, 'ROLE_MANAGER', '{"ja_JP":"標準管理者","en_US":"Standard Admin","zh_CN":"一般管理员"}','f','f',100,NULL,'2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
+(3, 'ROLE_USER', '{"ja_JP":"クライアントユーザー","en_US":"Client User","zh_CN":"客户端用户"}','f','f',1,NULL,'2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
+(4, 'ROLE_IMPORT_USER', '{"ja_JP":"導入担当者","en_US":"Import User","zh_CN":"导入人员"}','f','f',10,NULL,'2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09');
 
 DROP TABLE IF EXISTS "public"."mast_account";
 CREATE TABLE "public"."mast_account" (
@@ -141,16 +141,16 @@ CREATE TABLE "public"."mast_account_mapping_role" (
 );
 
 INSERT INTO "public"."mast_account_mapping_role" VALUES
-(1, 'ADMIN'),
-(2,'MANAGER'),
-(3,'MANAGER'),
-(4,'MANAGER'),
-(5,'USER'),
-(6,'USER'),
-(7,'USER'),
-(8,'USER'),
-(9,'IMPORT_USER'),
-(10,'IMPORT_USER');
+(1, 'ROLE_ADMIN'),
+(2,'ROLE_MANAGER'),
+(3,'ROLE_MANAGER'),
+(4,'ROLE_MANAGER'),
+(5,'ROLE_USER'),
+(6,'ROLE_USER'),
+(7,'ROLE_USER'),
+(8,'ROLE_USER'),
+(9,'ROLE_IMPORT_USER'),
+(10,'ROLE_IMPORT_USER');
 
 DROP TABLE IF EXISTS "public"."mast_role_mapping_permission";
 CREATE TABLE "public"."mast_role_mapping_permission" (
@@ -160,26 +160,26 @@ CREATE TABLE "public"."mast_role_mapping_permission" (
 );
 
 INSERT INTO "public"."mast_role_mapping_permission" VALUES
-('ADMIN', 'dashboard'),
-('ADMIN', 'system'),
-('ADMIN', 'system:user'),
-('ADMIN', 'system:user@read'),
-('ADMIN', 'system:user@import'),
-('ADMIN', 'system:user@update'),
-('ADMIN', 'system:user@delete'),
-('ADMIN', 'system:user@suspension'),
-('ADMIN', 'system:user@create'),
-('ADMIN', 'system:user@assign-roles'),
-('MANAGER', 'dashboard'),
-('MANAGER', 'system'),
-('MANAGER', 'system:user'),
-('MANAGER', 'system:user@read'),
-('MANAGER', 'system:user@update'),
-('MANAGER', 'system:user@delete'),
-('MANAGER', 'system:user@suspension'),
-('MANAGER', 'system:user@create'),
-('MANAGER', 'system:user@assign-roles'),
-('IMPORT_USER', 'dashboard'),
-('IMPORT_USER', 'system'),
-('IMPORT_USER', 'system:user'),
-('IMPORT_USER', 'system:user@import');
+('ROLE_ADMIN', 'dashboard'),
+('ROLE_ADMIN', 'system'),
+('ROLE_ADMIN', 'system:user'),
+('ROLE_ADMIN', 'system:user@read'),
+('ROLE_ADMIN', 'system:user@import'),
+('ROLE_ADMIN', 'system:user@update'),
+('ROLE_ADMIN', 'system:user@delete'),
+('ROLE_ADMIN', 'system:user@suspension'),
+('ROLE_ADMIN', 'system:user@create'),
+('ROLE_ADMIN', 'system:user@assign-roles'),
+('ROLE_MANAGER', 'dashboard'),
+('ROLE_MANAGER', 'system'),
+('ROLE_MANAGER', 'system:user'),
+('ROLE_MANAGER', 'system:user@read'),
+('ROLE_MANAGER', 'system:user@update'),
+('ROLE_MANAGER', 'system:user@delete'),
+('ROLE_MANAGER', 'system:user@suspension'),
+('ROLE_MANAGER', 'system:user@create'),
+('ROLE_MANAGER', 'system:user@assign-roles'),
+('ROLE_IMPORT_USER', 'dashboard'),
+('ROLE_IMPORT_USER', 'system'),
+('ROLE_IMPORT_USER', 'system:user'),
+('ROLE_IMPORT_USER', 'system:user@import');

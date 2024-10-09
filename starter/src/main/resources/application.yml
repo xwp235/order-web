@@ -2,7 +2,7 @@ server:
   servlet:
     context-path: /
     session:
-      timeout: 30m
+      timeout: 10m
   port: 8080
 
 spring:
@@ -15,6 +15,8 @@ spring:
       enabled: on
   main:
     banner-mode: off
+  messages:
+    basename: multi-languages/info
   jackson:
     time-zone: UTC
     serialization:
@@ -79,23 +81,37 @@ mybatis:
   type-handlers-package: com.xweb.starter.common.typehandler
 
 security:
+  invalid-session-url: /invalid-session
+  expired-session-url: /session-expired
+  access-denied-url: /403
+  maximum-sessions: 1
+  maxSessions-prevents-login: off
   csrf-ignore-url-patterns:
     - /
     - /error
     - /adminlte/**
     - /plugins/**
     - /img/**
-    - /api/**
+    - /api/login
   white-url-patterns:
-    - /login
+    - ${security.api-login.login-processing-url}
+    - ${security.form-login.login-processing-url}
     - /
     - /error
     - /adminlte/**
     - /plugins/**
     - /img/**
+    - ${security.invalid-session-url}
+    - ${security.expired-session-url}
   form-login:
     username-parameter: username
     password-parameter: password
     login-page: /login
     login-processing-url: /login
-    defaultSuccessUrl: /dashboard
+    default-success-url: /dashboard
+    post-only: on
+  api-login:
+    username-parameter: username
+    password-parameter: password
+    login-processing-url: /api/login
+    post-only: on

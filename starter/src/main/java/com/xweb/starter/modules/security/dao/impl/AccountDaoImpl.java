@@ -24,20 +24,25 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public Set<Role> selectAccountRelatedPermissions(Long accountId) {
-        return accountMapper.selectAccountRelatedPermissions(accountId);
+    public Set<Role> selectAccountRelatedRoles(Long accountId) {
+        return accountMapper.selectAccountRelatedRoles(accountId);
     }
 
     @Override
-    public Map<String, Collection<ConfigAttribute>> loadButtonPermissions() {
+    public Set<Role> selectAccountRelatedPermissions(Set<String> roleSet) {
+        return accountMapper.selectAccountRelatedPermissions(roleSet);
+    }
+
+    @Override
+    public Map<String, Collection<ConfigAttribute>> loadRolePermissions() {
         var permissionsMap = new HashMap<String, Collection<ConfigAttribute>>();
-        var urlBtnPermissions = accountMapper.selectButtonPermissions();
+        var urlBtnPermissions = accountMapper.selectPermissions();
         for (var urlBtnPermission : urlBtnPermissions) {
             var mapKey = SecurityHelper.generateBtnPermissionMapKey(urlBtnPermission.getRequestMethod(),urlBtnPermission.getRequestUrl());
             var mapSetItemVal = urlBtnPermission.getPermissionKey();
             Collection<ConfigAttribute> itemBtnPermissions;
             if (!permissionsMap.containsKey(mapKey)) {
-                itemBtnPermissions = new HashSet<>();
+                itemBtnPermissions = new ArrayList<>();
                 itemBtnPermissions.add(new SecurityConfig(mapSetItemVal));
                 permissionsMap.put(mapKey, itemBtnPermissions);
             } else {

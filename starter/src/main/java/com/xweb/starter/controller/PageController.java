@@ -16,4 +16,9 @@ public class PageController {
         return "backend/index";
     }
 
+    @GetMapping("/user-manage")
+    public String userManage() {
+        return "backend/user-manage/index";
+    }
+
 }

@@ -13,11 +13,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
-public class LogbackMDIdFilter extends OncePerRequestFilter {
+public class RequestLogRecordFilter extends OncePerRequestFilter {
 
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         MDC.put(Constants.LOGBACK_LOG_THREAD_ID, IdWorkerUtil.getIdStr());
+
         filterChain.doFilter(request, response);
     }
 

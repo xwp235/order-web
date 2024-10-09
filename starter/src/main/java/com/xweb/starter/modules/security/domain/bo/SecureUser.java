@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Accessors(chain = true)
@@ -95,7 +94,7 @@ public class SecureUser implements UserDetails, CredentialsContainer {
                         Stream.of(new SimpleGrantedAuthority(role.getMrId())),
                         role.getPermissions().stream())
                 // 使用toSet会使投票策略无效，故使用允许权限flag重复
-                ).collect(Collectors.toList());
+                ).toList();
     }
 
     @Override

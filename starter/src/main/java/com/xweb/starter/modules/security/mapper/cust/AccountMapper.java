@@ -79,11 +79,38 @@ public interface AccountMapper {
             @Result(property = "mrId", column = "mr_id"),
             @Result(property = "mrName", column = "mr_name", javaType = MultiLanguage.class,typeHandler = MultiLanguageTypeHandler.class),
             @Result(property = "mrWeight", column = "mr_weight"),
+            @Result(property = "builtIn", column = "built_in")
+    })
+    Set<Role> selectAccountRelatedRoles(Long accountId);
+
+    @Select("""
+       <script>
+           SELECT
+             id,
+             mr_id,
+             mr_name,
+             mr_weight,
+             mr_enable_delete built_in
+           FROM
+             public.mast_role r
+             LEFT JOIN public.mast_account_mapping_role mamr ON r.mr_id = mamr.role_id
+           WHERE
+             r.mr_id IN
+            <foreach collection="roleSet" item="itemId" open="(" separator="," close=")">
+                  #{itemId}
+            </foreach>
+       </script>
+    """)
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "mrId", column = "mr_id"),
+            @Result(property = "mrName", column = "mr_name", javaType = MultiLanguage.class,typeHandler = MultiLanguageTypeHandler.class),
+            @Result(property = "mrWeight", column = "mr_weight"),
             @Result(property = "builtIn", column = "built_in"),
             @Result(property = "permissions", javaType = Set.class, column = "mr_id",
                     many = @Many(select = "selectPermissionsByRoleId"))
     })
-    Set<Role> selectAccountRelatedPermissions(Long accountId);
+    Set<Role> selectAccountRelatedPermissions(Set<String> roleSet);
 
     @Select("""
            SELECT
@@ -116,6 +143,6 @@ public interface AccountMapper {
             @Result(property = "requestUrl", column = "mm_path", jdbcType = JdbcType.VARCHAR),
             @Result(property = "requestMethod", column = "mm_method", jdbcType = JdbcType.VARCHAR)
     })
-    List<RequestPermission> selectButtonPermissions();
+    List<RequestPermission> selectPermissions();
 
 }

@@ -1,0 +1,11 @@
+@host = http://localhost:8080
+@apiPrefix = /api
+
+### 管理员账号登录
+POST {{host}}{{apiPrefix}}/login
+Content-Type: application/json
+
+{
+  "username":"manager1",
+  "password":"password"
+}

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.github.benmanes.caffeine.cache.AsyncCache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
-import com.xweb.starter.common.filter.LogbackMDIdFilter;
+import com.xweb.starter.common.filter.RequestLogRecordFilter;
 import com.xweb.starter.utils.LogUtil;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -71,7 +71,7 @@ public class BeanConfig {
     }
 
     @Bean
-    FilterRegistrationBean<LogbackMDIdFilter> demoFilterRegistration(LogbackMDIdFilter filter) {
+    FilterRegistrationBean<RequestLogRecordFilter> requestLogRecordFilterFilterRegistrationBean(RequestLogRecordFilter filter) {
         var registration = new FilterRegistrationBean<>(filter);
         registration.setEnabled(false);
         return registration;

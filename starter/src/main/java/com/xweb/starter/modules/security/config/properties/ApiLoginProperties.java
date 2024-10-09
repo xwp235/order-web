@@ -3,13 +3,11 @@ package com.xweb.starter.modules.security.config.properties;
 import lombok.Data;
 
 @Data
-public class FormLoginProperties {
+public class ApiLoginProperties {
 
     private String usernameParameter;
     private String passwordParameter;
-    private String loginPage;
     private String loginProcessingUrl;
-    private String defaultSuccessUrl;
     private Boolean postOnly;
 
 }

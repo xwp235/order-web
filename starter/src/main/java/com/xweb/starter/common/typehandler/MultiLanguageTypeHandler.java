@@ -1,7 +1,7 @@
 package com.xweb.starter.common.typehandler;
 
 import com.xweb.starter.common.dbmappingtypes.MultiLanguage;
-import com.xweb.starter.utils.JsonUtil;
+import com.xweb.starter.utils.SimpleJsonUtil;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 
@@ -15,7 +15,8 @@ public class MultiLanguageTypeHandler extends BaseTypeHandler<MultiLanguage> {
 
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, MultiLanguage parameter, JdbcType jdbcType) throws SQLException {
-      ps.setString(i, JsonUtil.obj2Json(parameter));
+
+      ps.setString(i, SimpleJsonUtil.toJson(parameter));
     }
 
     @Override
@@ -37,6 +38,7 @@ public class MultiLanguageTypeHandler extends BaseTypeHandler<MultiLanguage> {
         if (jsonString == null) {
             return null;
         }
-        return JsonUtil.json2Obj(jsonString, MultiLanguage.class);
+        return SimpleJsonUtil.fromJson(jsonString, MultiLanguage.class);
     }
+    
 }

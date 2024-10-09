@@ -22,8 +22,8 @@ public class PermissionMetadataSource implements FilterInvocationSecurityMetadat
     private Map<String, Collection<ConfigAttribute>> permissionMap;
 
     @PostConstruct
-    public void loadBtnPermissions() {
-       permissionMap = accountDao.loadButtonPermissions();
+    public void loadRolePermissions() {
+       permissionMap = accountDao.loadRolePermissions();
     }
 
     @Override

@@ -12,8 +12,10 @@ public interface AccountDao {
 
     MastAccount selectForLogin(String account);
 
-    Set<Role> selectAccountRelatedPermissions(Long accountId);
+    Set<Role> selectAccountRelatedRoles(Long accountId);
 
-    Map<String, Collection<ConfigAttribute>> loadButtonPermissions();
+    Set<Role> selectAccountRelatedPermissions(Set<String> roleSet);
+
+    Map<String, Collection<ConfigAttribute>> loadRolePermissions();
 
 }
