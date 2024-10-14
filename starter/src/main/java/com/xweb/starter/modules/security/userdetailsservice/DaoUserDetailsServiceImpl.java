@@ -44,7 +44,7 @@ public class DaoUserDetailsServiceImpl implements UserDetailsService {
 
         // 3. 封装用户信息到SecureUser类中
         var loginUser = new SecureUser();
-        loginUser.setId(dbAccount.getId())
+        loginUser.setAccountId(dbAccount.getId())
                 .setNickname(dbAccount.getNickname())
                 .setUsername(dbAccount.getUsername())
                 .setMobile(dbAccount.getMobile())

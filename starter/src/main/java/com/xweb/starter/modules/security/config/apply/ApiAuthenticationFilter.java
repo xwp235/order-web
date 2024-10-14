@@ -79,6 +79,7 @@ public class ApiAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         if (apiLoginProperties.getPostOnly() && !request.getMethod().equals("POST")) {
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
         }
+        request.getSession();
         UsernamePasswordAuthenticationToken authRequest;
         try (var is = request.getInputStream()) {
             var jsonNode = objectMapper.readTree(is);

@@ -11,6 +11,7 @@ import com.xweb.starter.modules.security.config.properties.SecurityProperties;
 import com.xweb.starter.modules.security.config.strategy.SimpleCompositeInvalidSessionStrategy;
 import com.xweb.starter.modules.security.config.strategy.SimpleCompositeSessionInformationExpiredStrategy;
 import com.xweb.starter.modules.security.config.successhandler.WebLogoutSuccessHandler;
+import com.xweb.starter.modules.security.dao.HisClientLoginLogDao;
 import com.xweb.starter.modules.security.dao.RoleDao;
 import com.xweb.starter.utils.JsonUtil;
 import com.xweb.starter.utils.RequestUtil;
@@ -37,6 +38,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AnonymousConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionRegistry;
@@ -65,7 +67,7 @@ import java.util.Objects;
  */
 @Configuration
 @EnableConfigurationProperties(SecurityProperties.class)
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity(debug = false)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -80,7 +82,8 @@ public class SecurityConfig {
             PermissionMetadataSource metadataSource,
             RequestLogRecordFilter requestLogRecordFilter,
             ObjectMapper objectMapper,
-            SessionRegistry sessionRegistry
+            SessionRegistry sessionRegistry,
+            HisClientLoginLogDao clientLoginLogDao
     ) throws Exception {
 
         var authorizationFilter = new AuthorizationFilter(new CompositeAuthorizationManager(metadataSource));
@@ -110,7 +113,7 @@ public class SecurityConfig {
             // 在安全链开始前加入logback的输出日志对应ID
             .addFilterBefore(requestLogRecordFilter, DisableEncodeUrlFilter.class)
             // 配置自定义授权过滤器
-            .addFilterBefore(authorizationFilter, AuthorizationFilter.class);
+            .addFilterAt(authorizationFilter, AuthorizationFilter.class);
 
              var maximumSession = securityProperties.getMaximumSessions();
              var compositeInvalidSessionStrategy = new SimpleCompositeInvalidSessionStrategy(securityProperties.getInvalidSessionUrl());
@@ -124,6 +127,7 @@ public class SecurityConfig {
                 if (Objects.nonNull(maximumSession)) {
                     var compositeSessionExpiredStrategy = new SimpleCompositeSessionInformationExpiredStrategy(securityProperties.getExpiredSessionUrl());
                     session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                         .maximumSessions(maximumSession)
                         .maxSessionsPreventsLogin(securityProperties.getMaxSessionsPreventsLogin())
                             // 自定义并发控制加载时session过期后的处理策略(ajax访问返回json)
@@ -167,7 +171,7 @@ public class SecurityConfig {
             http.logout(logout->
                     logout
                         .addLogoutHandler(new HeaderWriterLogoutHandler(new ClearSiteDataHeaderWriter(ClearSiteDataHeaderWriter.Directive.COOKIES)))
-                        .logoutSuccessHandler(new WebLogoutSuccessHandler())
+                        .logoutSuccessHandler(new WebLogoutSuccessHandler(clientLoginLogDao))
             );
         return http.build();
     }

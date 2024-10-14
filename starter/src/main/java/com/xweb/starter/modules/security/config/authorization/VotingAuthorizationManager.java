@@ -27,7 +27,7 @@ public class VotingAuthorizationManager implements AuthorizationManager<HttpServ
         if (CollectionUtils.isEmpty(requiredAttributes)) {
             return new AuthorizationDecision(true);
         }
-        return votingStrategy.vote(authentication.get(), permissionMetadataSource.getAttributes(request));
+        return votingStrategy.vote(authentication.get(), requiredAttributes);
     }
 
 }

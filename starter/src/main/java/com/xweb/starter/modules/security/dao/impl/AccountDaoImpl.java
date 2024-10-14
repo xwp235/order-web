@@ -36,10 +36,10 @@ public class AccountDaoImpl implements AccountDao {
     @Override
     public Map<String, Collection<ConfigAttribute>> loadRolePermissions() {
         var permissionsMap = new HashMap<String, Collection<ConfigAttribute>>();
-        var urlBtnPermissions = accountMapper.selectPermissions();
-        for (var urlBtnPermission : urlBtnPermissions) {
-            var mapKey = SecurityHelper.generateBtnPermissionMapKey(urlBtnPermission.getRequestMethod(),urlBtnPermission.getRequestUrl());
-            var mapSetItemVal = urlBtnPermission.getPermissionKey();
+        var urlPermissions = accountMapper.selectPermissions();
+        for (var urlPermission : urlPermissions) {
+            var mapKey = SecurityHelper.generatePermissionMapKey(urlPermission.getRequestMethod(),urlPermission.getRequestUrl());
+            var mapSetItemVal = urlPermission.getPermissionKey();
             Collection<ConfigAttribute> itemBtnPermissions;
             if (!permissionsMap.containsKey(mapKey)) {
                 itemBtnPermissions = new ArrayList<>();

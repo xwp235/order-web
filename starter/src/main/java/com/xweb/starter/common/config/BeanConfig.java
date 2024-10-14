@@ -8,11 +8,13 @@ import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.xweb.starter.common.filter.RequestLogRecordFilter;
 import com.xweb.starter.utils.LogUtil;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.autoconfigure.quartz.SchedulerFactoryBeanCustomizer;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
 
+import javax.sql.DataSource;
 import java.time.Duration;
 
 @Configuration
@@ -21,6 +23,16 @@ import java.time.Duration;
 })
 @EnableAsync
 public class BeanConfig {
+
+    @Bean
+    SchedulerFactoryBeanCustomizer schedulerFactoryBeanCustomizer(DataSource dataSource) {
+        System.out.println(dataSource);
+        return schedulerFactoryBean -> {
+            schedulerFactoryBean.setAutoStartup(true);
+            schedulerFactoryBean.setOverwriteExistingJobs(false);
+            schedulerFactoryBean.setDataSource(dataSource);
+        };
+    }
 
     @Bean
     com.fasterxml.jackson.databind.Module simpleModule() {

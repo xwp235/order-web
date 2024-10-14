@@ -137,6 +137,7 @@ public interface AccountMapper {
             public.mast_menu
           WHERE
             mm_path IS NOT NULL
+            AND mm_state = 1
     """)
     @Results({
             @Result(property = "permissionKey", column = "mm_code",jdbcType = JdbcType.VARCHAR),

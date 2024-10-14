@@ -23,7 +23,7 @@ public class SecureUser implements UserDetails, CredentialsContainer {
 
     @Getter
     @Setter
-    private Long id;
+    private Long accountId;
 
     @Getter
     @Setter

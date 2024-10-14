@@ -44,7 +44,7 @@ public class ApplySecurityConfig implements SecurityConfigurer<DefaultSecurityFi
                    .authenticationDetailsSource(LoginExtraDetails::new)
             )
             // rest api登录配置
-            .addFilterBefore(apiAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+            .addFilterAt(apiAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
