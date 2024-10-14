@@ -1,6 +1,9 @@
 package com.xweb.starter.common.resp;
 
+import com.xweb.starter.common.constants.Constants;
 import com.xweb.starter.utils.JsonUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.MDC;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -11,7 +14,7 @@ import java.util.Objects;
 import static com.xweb.starter.common.constants.Constants.DEFAULT_REQUEST_ERROR_CODE;
 import static com.xweb.starter.common.constants.Constants.DEFAULT_REQUEST_SUCCESS_CODE;
 
-public class JsonResp extends LinkedHashMap<String, Object> implements Serializable {
+public final class JsonResp extends LinkedHashMap<String, Object> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 29646765469935799L;
@@ -94,6 +97,14 @@ public class JsonResp extends LinkedHashMap<String, Object> implements Serializa
 
     public JsonResp setSuccess(boolean success) {
         this.put("success", success);
+        return this;
+    }
+
+    public JsonResp setExceptionTypeWithTraceId(String errorType) {
+        if (StringUtils.equalsAny(errorType, Constants.EXCEPTION_TYPE.ERROR, Constants.EXCEPTION_TYPE.WARN)) {
+            this.put("traceId", MDC.get(Constants.LOGBACK_LOG_THREAD_ID));
+        }
+        this.put("errorType", errorType);
         return this;
     }
 

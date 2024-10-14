@@ -6,6 +6,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.xweb.starter.common.exception.BusinessException;
+import com.xweb.starter.common.exception.enums.BusinessExceptionEnum;
 import org.springframework.beans.BeanUtils;
 
 import java.util.Objects;
@@ -24,8 +26,7 @@ public class JsonUtil {
         try {
             return getMapper().writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            LogUtil.error("JsonUtil#json2Obj(object) error occurred!",e);
-            return null;
+            throw new BusinessException(BusinessExceptionEnum.OBJ_SERIALIZE_2_JSON_FAILED);
         }
     }
 
@@ -42,8 +43,7 @@ public class JsonUtil {
         try {
             return getMapper().writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            LogUtil.error("JsonUtil#obj2Json(object,include) error occurred!",e);
-            return null;
+            throw new BusinessException(BusinessExceptionEnum.OBJ_SERIALIZE_2_JSON_FAILED);
         }
     }
 
@@ -54,8 +54,7 @@ public class JsonUtil {
         try{
             return getMapper().readValue(json, type);
         } catch (JsonProcessingException e) {
-            LogUtil.error("JsonUtil#json2Obj(json,type) error occurred!",e);
-            return null;
+            throw new BusinessException(BusinessExceptionEnum.JSON_DESERIALIZE_2_OBJ_FAILED);
         }
     }
 
@@ -68,8 +67,7 @@ public class JsonUtil {
         try{
             return getMapper().readValue(json, valueTypeRef);
         } catch (JsonProcessingException e) {
-            LogUtil.error("JsonUtil#json2Obj(valueTypeRef) error occurred!",e);
-            return null;
+            throw new BusinessException(BusinessExceptionEnum.JSON_DESERIALIZE_2_OBJ_FAILED);
         }
     }
 
@@ -121,8 +119,7 @@ public class JsonUtil {
         try {
           return getMapper().readTree(getMapper().writeValueAsString(original));
         } catch (JsonProcessingException e) {
-            LogUtil.error("JsonUtil#deepCopy error occurred!",e);
-            return null;
+            throw new BusinessException(BusinessExceptionEnum.DEEP_COPY_OBJ_FAILED);
         }
     }
 

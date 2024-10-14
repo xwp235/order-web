@@ -1,6 +1,7 @@
 package com.xweb.starter.utils;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.MediaType;
@@ -47,6 +48,18 @@ public class RequestUtil {
         if (Objects.nonNull(attributes)) {
             RequestContextHolder.setRequestAttributes(attributes,true);
             return attributes.getRequest();
+        }
+        return null;
+    }
+
+    /**
+     * 获取Servlet返回对象
+     */
+    public static HttpServletResponse getServletResponse() {
+        var attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (Objects.nonNull(attributes)) {
+            RequestContextHolder.setRequestAttributes(attributes,true);
+            return attributes.getResponse();
         }
         return null;
     }

@@ -16,7 +16,7 @@ spring:
   main:
     banner-mode: off
   messages:
-    basename: multi-languages/info
+    basename: multi-languages/info,multi-languages/error
   jackson:
     time-zone: UTC
     serialization:
@@ -127,6 +127,10 @@ security:
     - /plugins/**
     - /img/**
     - /api/login
+    - ${security.invalid-session-url}
+    - ${security.expired-session-url}
+    - ${security.access-denied-url}
+    - /too-many-requests
   white-url-patterns:
     - ${security.api-login.login-processing-url}
     - ${security.form-login.login-processing-url}
@@ -137,6 +141,7 @@ security:
     - /img/**
     - ${security.invalid-session-url}
     - ${security.expired-session-url}
+    - /too-many-requests
   form-login:
     username-parameter: username
     password-parameter: password

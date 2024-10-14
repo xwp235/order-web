@@ -33,9 +33,7 @@ public class AsyncConfig implements AsyncConfigurer {
 
     @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return (throwable,method,objects) -> {
-            LogUtil.error("Async task exec failed !",throwable);
-        };
+        return (throwable,method,objects) -> LogUtil.error("Async task exec failed !",throwable);
     }
 
 }

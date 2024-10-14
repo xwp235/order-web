@@ -19,6 +19,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/login").setViewName("backend/login");
         registry.addViewController("/session-expired").setViewName("session-expired");
         registry.addViewController("/invalid-session").setViewName("invalid-session");
+        registry.addViewController("/too-many-requests").setViewName("too-many-requests");
+        registry.addViewController("/").setViewName("invalid-session");
         registry.addViewController("/403").setViewName("403");
     }
 
