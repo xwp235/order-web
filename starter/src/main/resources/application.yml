@@ -2,7 +2,10 @@ server:
   servlet:
     context-path: /
     session:
-      timeout: 10m
+      timeout: 1m
+      cookie:
+        # 必须配置，防止使用spring-session做session管理时导致相互间session不一致
+        name: ORDER-WEB-SESSION-ID
   port: 8080
 
 spring:
@@ -118,8 +121,11 @@ security:
   invalid-session-url: /invalid-session
   expired-session-url: /session-expired
   access-denied-url: /403
-  maximum-sessions:
+  maximum-sessions: 1
+  # 如果使用了remember-me功能就无法将此处设为on
   maxSessions-prevents-login: off
+  image-code-parameter: image-code
+  image-code-token-parameter: image-code-token
   csrf-ignore-url-patterns:
     - /
     - /error
@@ -131,6 +137,7 @@ security:
     - ${security.expired-session-url}
     - ${security.access-denied-url}
     - /too-many-requests
+    - /kaptcha/**
   white-url-patterns:
     - ${security.api-login.login-processing-url}
     - ${security.form-login.login-processing-url}
@@ -142,6 +149,7 @@ security:
     - ${security.invalid-session-url}
     - ${security.expired-session-url}
     - /too-many-requests
+    - /kaptcha/**
   form-login:
     username-parameter: username
     password-parameter: password
@@ -154,3 +162,8 @@ security:
     password-parameter: password
     login-processing-url: /api/login
     post-only: on
+  remember-me:
+    enabled: on
+    cookie-name: remember-me
+    # 一周内有效
+    token-validity-seconds: 604800

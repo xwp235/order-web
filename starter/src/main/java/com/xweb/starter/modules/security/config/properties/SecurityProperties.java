@@ -25,5 +25,10 @@ public class SecurityProperties {
 
     private ApiLoginProperties apiLogin;
 
+    private String imageCodeParameter;
+
+    private String imageCodeTokenParameter;
+
+    private RememberMeProperties rememberMe;
 
 }

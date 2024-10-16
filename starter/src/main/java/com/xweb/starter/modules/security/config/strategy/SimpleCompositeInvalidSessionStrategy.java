@@ -4,6 +4,7 @@ import com.xweb.starter.common.resp.JsonResp;
 import com.xweb.starter.utils.JsonUtil;
 import com.xweb.starter.utils.MessageUtil;
 import com.xweb.starter.utils.RequestUtil;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
@@ -22,15 +23,18 @@ public final class SimpleCompositeInvalidSessionStrategy implements InvalidSessi
 
     private final Log logger = LogFactory.getLog(getClass());
     private final String destinationUrl;
+    private final String cookieName;
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
-    public SimpleCompositeInvalidSessionStrategy(String invalidSessionUrl) {
+    public SimpleCompositeInvalidSessionStrategy(String invalidSessionUrl,String cookieName) {
         Assert.isTrue(UrlUtils.isValidRedirectUrl(invalidSessionUrl), "url must start with '/' or with 'http(s)'");
         this.destinationUrl = invalidSessionUrl;
+        this.cookieName = cookieName;
     }
 
     @Override
     public void onInvalidSessionDetected(HttpServletRequest request, HttpServletResponse response) throws IOException {
+          cancelCookie(request,response);
           if (RequestUtil.isAjaxRequest(request)){
               setResponseDetails(response);
               var result = JsonResp.error(MessageUtil.getMessage("info_invalid_session")).setCode(HttpStatus.UNAUTHORIZED.value());
@@ -48,6 +52,19 @@ public final class SimpleCompositeInvalidSessionStrategy implements InvalidSessi
         resp.setStatus(HttpStatus.OK.value());
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType(MediaType.APPLICATION_JSON_VALUE);
+    }
+
+    private void cancelCookie(HttpServletRequest request, HttpServletResponse response) {
+        var cookie = new Cookie(cookieName, null);
+        // 设置为0cookie就会被删除
+        cookie.setMaxAge(0);
+        cookie.setPath(getCookiePath(request));
+        response.addCookie(cookie);
+    }
+
+    private String getCookiePath(HttpServletRequest request){
+        var contextPath = request.getContextPath();
+        return !contextPath.isEmpty() ?contextPath:"/";
     }
 
 }

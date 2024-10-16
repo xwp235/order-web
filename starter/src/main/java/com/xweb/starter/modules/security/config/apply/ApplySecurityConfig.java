@@ -2,14 +2,15 @@ package com.xweb.starter.modules.security.config.apply;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xweb.starter.modules.security.config.details.LoginExtraDetails;
+import com.xweb.starter.modules.security.config.filter.ApiAuthenticationFilter;
 import com.xweb.starter.modules.security.config.properties.SecurityProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.SecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.context.SecurityContextRepository;
 
 /**
@@ -21,13 +22,19 @@ public class ApplySecurityConfig implements SecurityConfigurer<DefaultSecurityFi
     private final SecurityProperties securityProperties;
     private final ObjectMapper objectMapper;
     private final AuthenticationManager authenticationManager;
-    private final SecurityContextRepository securityContextRepository;
-    private final SessionRegistry sessionRegistry;
 
     @Override
     public void init(HttpSecurity http) throws Exception {
         var formLogin = securityProperties.getFormLogin();
-        var apiAuthenticationFilter = new ApiAuthenticationFilter(securityProperties, objectMapper, authenticationManager,securityContextRepository,sessionRegistry);
+        var securityContextRepository = http.getSharedObject(SecurityContextRepository.class);
+        var sessionAuthenticationStrategy = http.getSharedObject(SessionAuthenticationStrategy.class);
+
+        var apiAuthenticationFilter = new ApiAuthenticationFilter(
+                securityProperties, objectMapper,
+                authenticationManager,securityContextRepository,
+                sessionAuthenticationStrategy
+        );
+
         http
             // form表单登录配置
             .formLogin(form ->

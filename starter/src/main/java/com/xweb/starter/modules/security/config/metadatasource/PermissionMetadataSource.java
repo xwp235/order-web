@@ -2,7 +2,6 @@ package com.xweb.starter.modules.security.config.metadatasource;
 
 import com.xweb.starter.common.constants.Constants;
 import com.xweb.starter.modules.security.dao.AccountDao;
-import com.xweb.starter.modules.security.helpers.SecurityHelper;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

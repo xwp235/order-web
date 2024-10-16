@@ -6,18 +6,22 @@ import com.xweb.starter.common.filter.RequestLogRecordFilter;
 import com.xweb.starter.common.resp.JsonResp;
 import com.xweb.starter.modules.security.config.apply.ApplySecurityConfig;
 import com.xweb.starter.modules.security.config.authorization.CompositeAuthorizationManager;
+import com.xweb.starter.modules.security.config.filter.CheckImageCodeFilter;
+import com.xweb.starter.modules.security.config.filter.CheckLoginStateFilter;
+import com.xweb.starter.modules.security.config.handler.WebLogoutSuccessHandler;
 import com.xweb.starter.modules.security.config.metadatasource.PermissionMetadataSource;
 import com.xweb.starter.modules.security.config.properties.SecurityProperties;
 import com.xweb.starter.modules.security.config.strategy.SimpleCompositeInvalidSessionStrategy;
 import com.xweb.starter.modules.security.config.strategy.SimpleCompositeSessionInformationExpiredStrategy;
-import com.xweb.starter.modules.security.config.successhandler.WebLogoutSuccessHandler;
 import com.xweb.starter.modules.security.dao.HisClientLoginLogDao;
 import com.xweb.starter.modules.security.dao.RoleDao;
 import com.xweb.starter.utils.JsonUtil;
 import com.xweb.starter.utils.RequestUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
@@ -50,16 +54,16 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.authentication.session.ChangeSessionIdAuthenticationStrategy;
-import org.springframework.security.web.context.DelegatingSecurityContextRepository;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
-import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.security.web.context.*;
 import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
 import org.springframework.security.web.savedrequest.NullRequestCache;
 import org.springframework.security.web.session.DisableEncodeUrlFilter;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
+import javax.sql.DataSource;
 import java.util.Objects;
 
 /**
@@ -67,10 +71,12 @@ import java.util.Objects;
  */
 @Configuration
 @EnableConfigurationProperties(SecurityProperties.class)
-@EnableWebSecurity(debug = false)
+@EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    @Value("${server.servlet.session.cookie.name}")
+    private String cookieName;
     private final SecurityProperties securityProperties;
 
     @Bean
@@ -81,9 +87,11 @@ public class SecurityConfig {
             ApplicationContext applicationContext,
             PermissionMetadataSource metadataSource,
             RequestLogRecordFilter requestLogRecordFilter,
+            CheckLoginStateFilter checkLoginStateFilter,
+            CheckImageCodeFilter checkImageCodeFilter,
             ObjectMapper objectMapper,
-            SessionRegistry sessionRegistry,
-            HisClientLoginLogDao clientLoginLogDao
+            HisClientLoginLogDao clientLoginLogDao,
+            PersistentTokenRepository persistentTokenRepository
     ) throws Exception {
 
         var authorizationFilter = new AuthorizationFilter(new CompositeAuthorizationManager(metadataSource));
@@ -112,11 +120,18 @@ public class SecurityConfig {
             })
             // 在安全链开始前加入logback的输出日志对应ID
             .addFilterBefore(requestLogRecordFilter, DisableEncodeUrlFilter.class)
+            // 检测图片验证码是否正确
+            .addFilterBefore(checkImageCodeFilter, SecurityContextHolderFilter.class)
+            // 检测用户是否登录，如果已经登录访问登录页时将其导向到首页
+            .addFilterAfter(
+                    checkLoginStateFilter,
+                    SecurityContextHolderFilter.class
+            )
             // 配置自定义授权过滤器
             .addFilterAt(authorizationFilter, AuthorizationFilter.class);
 
              var maximumSession = securityProperties.getMaximumSessions();
-             var compositeInvalidSessionStrategy = new SimpleCompositeInvalidSessionStrategy(securityProperties.getInvalidSessionUrl());
+             var compositeInvalidSessionStrategy = new SimpleCompositeInvalidSessionStrategy(securityProperties.getInvalidSessionUrl(),cookieName);
              // session并发登录控制
              http.sessionManagement(session -> {
                 session.sessionAuthenticationStrategy(
@@ -137,12 +152,7 @@ public class SecurityConfig {
 
             // 自定义AuthenticationManager对象配置
             http.authenticationManager(authenticationManager)
-                .apply(new ApplySecurityConfig(securityProperties,
-                        objectMapper,
-                        authenticationManager,
-                        securityContextRepository,
-                        sessionRegistry)
-                );
+                    .apply(new ApplySecurityConfig(securityProperties, objectMapper,authenticationManager));
 
             http.exceptionHandling(handling->
                 handling
@@ -166,6 +176,16 @@ public class SecurityConfig {
                     request.getRequestDispatcher(securityProperties.getAccessDeniedUrl()).forward(request, response);
                   })
             );
+
+            var rememberMeProperties = securityProperties.getRememberMe();
+            if (rememberMeProperties.getEnabled()){
+                http.rememberMe(
+                  rememberMe -> rememberMe.tokenRepository(persistentTokenRepository)
+                          // 默认记住我一周内有效
+                          .tokenValiditySeconds(rememberMeProperties.getTokenValiditySeconds())
+                          .rememberMeCookieName(rememberMeProperties.getCookieName())
+                );
+            }
 
             // 自定义退出登录钩子
             http.logout(logout->
@@ -247,6 +267,35 @@ public class SecurityConfig {
     @Bean
     GrantedAuthoritiesMapper authoritiesMapper(RoleHierarchy roleHierarchy) {
         return new RoleHierarchyAuthoritiesMapper(roleHierarchy);
+    }
+
+    @Bean
+    PersistentTokenRepository persistentTokenRepository(DataSource dataSource) {
+        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+        tokenRepository.setDataSource(dataSource);
+        // tokenRepository.setCreateTableOnStartup(true);  // Uncomment this line if you want to create the table on startup
+        return tokenRepository;
+    }
+
+    @Bean
+    FilterRegistrationBean<RequestLogRecordFilter> requestLogRecordFilterFilterRegistrationBean(RequestLogRecordFilter filter) {
+        var registration = new FilterRegistrationBean<>(filter);
+        registration.setEnabled(false);
+        return registration;
+    }
+
+    @Bean
+    FilterRegistrationBean<CheckLoginStateFilter> checkLoginStateFilterBean(CheckLoginStateFilter filter) {
+        var registration = new FilterRegistrationBean<>(filter);
+        registration.setEnabled(false);
+        return registration;
+    }
+
+    @Bean
+    FilterRegistrationBean<CheckImageCodeFilter> checkImageCodeFilterBean(CheckImageCodeFilter filter) {
+        var registration = new FilterRegistrationBean<>(filter);
+        registration.setEnabled(false);
+        return registration;
     }
 
     private void setResponseDetails(HttpServletResponse resp) {

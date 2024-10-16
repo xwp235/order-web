@@ -73,10 +73,10 @@ public class SpringUtil implements ApplicationContextAware {
    */
   @SuppressWarnings("unchecked")
   public static <T> T getBean(TypeReference<T> reference) {
-    final ParameterizedType parameterizedType = (ParameterizedType) reference.getType();
-    final Class<T> rawType = (Class<T>) parameterizedType.getRawType();
-    final Class<?>[] genericTypes = Arrays.stream(parameterizedType.getActualTypeArguments()).map(type -> (Class<?>) type).toArray(Class[]::new);
-    final String[] beanNames = applicationContext.getBeanNamesForType(ResolvableType.forClassWithGenerics(rawType, genericTypes));
+    var parameterizedType = (ParameterizedType) reference.getType();
+    var rawType = (Class<T>) parameterizedType.getRawType();
+    var genericTypes = Arrays.stream(parameterizedType.getActualTypeArguments()).map(type -> (Class<?>) type).toArray(Class[]::new);
+    var beanNames = applicationContext.getBeanNamesForType(ResolvableType.forClassWithGenerics(rawType, genericTypes));
     return getBean(beanNames[0], rawType);
   }
 
@@ -126,7 +126,7 @@ public class SpringUtil implements ApplicationContextAware {
    * @return 当前的环境配置
    */
   public static String getActiveProfile() {
-    final String[] activeProfiles = getActiveProfiles();
+    var activeProfiles = getActiveProfiles();
     return activeProfiles.length > 0 ? activeProfiles[0] : null;
   }
 
@@ -140,7 +140,7 @@ public class SpringUtil implements ApplicationContextAware {
    * @param bean     bean
    */
   public static <T> void registerBean(String beanName, T bean) {
-    ConfigurableApplicationContext context = (ConfigurableApplicationContext) applicationContext;
+    var context = (ConfigurableApplicationContext) applicationContext;
     context.getBeanFactory().registerSingleton(beanName, bean);
   }
 

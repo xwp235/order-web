@@ -43,20 +43,25 @@
                                 </div>
                             </div>
                         </div>
-<!--                        <div class="row mb-2 ">-->
-<!--                            <div class="col-6">-->
-<!--                                <input name="code" type="text" class="form-control" placeholder="验证码">-->
-<!--                            </div>-->
-<!--                            <div class="col-6">-->
-<!--                                <img onclick="this.src='/code/image?'+Math.random()" src="/code/image" alt="验证码"   />-->
-<!--                            </div>-->
-<!--                        </div>-->
+                        <div class="row mb-2 ">
+                            <div class="col-6">
+                                <input name="image-code" type="text" class="form-control" placeholder="验证码"/>
+                            </div>
+                            <div class="col-6">
+                                <img id="imageCodeRef" onclick="loadImageCode()" alt="验证码" style="cursor:pointer;"/>
+                            </div>
+                        </div>
 
                         <input
                                 type="hidden"
                                 id="csrf_token"
                                 th:name="${_csrf.parameterName}"
                                 th:value="${_csrf.token}"
+                        />
+                        <input
+                                type="hidden"
+                                id="imageCodeTokenRef"
+                                name="image-code-token"
                         />
 
                         <div th:if="${param.error}">
@@ -78,10 +83,21 @@
                             </div>
                             <!-- /.col -->
                         </div>
-
                     </form>
                 </div>
             </div>
         </div>
+        <script th:src="@{/plugins/uuid-8.3.2.min.js}"></script>
+        <script>
+            let imageCodeRef = document.getElementById('imageCodeRef')
+            let imageCodeTokenRef = document.getElementById('imageCodeTokenRef')
+            let imageCodeToken = ''
+            const loadImageCode = () => {
+                imageCodeToken = uuid.v1()
+                imageCodeTokenRef.value = imageCodeToken
+                imageCodeRef.src = `/kaptcha/image-code/${imageCodeToken}`
+            }
+            window.addEventListener('load',() => loadImageCode())
+        </script>
     </body>
 </html>

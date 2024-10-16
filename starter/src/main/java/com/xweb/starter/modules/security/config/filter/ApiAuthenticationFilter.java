@@ -1,4 +1,4 @@
-package com.xweb.starter.modules.security.config.apply;
+package com.xweb.starter.modules.security.config.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xweb.starter.common.resp.JsonResp;
@@ -16,15 +16,11 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.session.*;
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.context.SecurityContextRepository;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
 
 public class ApiAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -35,20 +31,18 @@ public class ApiAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                    ObjectMapper objectMapper,
                                    AuthenticationManager authenticationManager,
                                    SecurityContextRepository securityContextRepository,
-                                   SessionRegistry sessionRegistry
+                                   SessionAuthenticationStrategy sessionAuthenticationStrategy
     ) {
         this.objectMapper = objectMapper;
         this.apiLoginProperties = securityProperties.getApiLogin();
         setFilterProcessesUrl(apiLoginProperties.getLoginProcessingUrl());
         setAuthenticationManager(authenticationManager);
+        setSessionAuthenticationStrategy(sessionAuthenticationStrategy);
+
         setAuthenticationDetailsSource(LoginExtraDetails::new);
+
         // 使用同一个上下文工厂
         super.setSecurityContextRepository(securityContextRepository);
-
-        if (Objects.nonNull(securityProperties.getMaximumSessions())) {
-            var delegateStrategies = getSessionAuthenticationStrategies(sessionRegistry,securityProperties);
-            setSessionAuthenticationStrategy(new CompositeSessionAuthenticationStrategy(delegateStrategies));
-        }
 
         setAuthenticationSuccessHandler((req,resp,authentication)-> {
             setResponseDetails(resp);
@@ -60,18 +54,6 @@ public class ApiAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             var result = JsonResp.error(ex.getMessage()).setCode(HttpStatus.UNAUTHORIZED.value());
             resp.getWriter().write(JsonUtil.obj2Json(result));
         });
-    }
-
-    private ArrayList<SessionAuthenticationStrategy> getSessionAuthenticationStrategies(SessionRegistry sessionRegistry, SecurityProperties securityProperties) {
-        var concurrentSessionControlStrategy = new ConcurrentSessionControlAuthenticationStrategy(
-                sessionRegistry);
-        concurrentSessionControlStrategy.setMaximumSessions(securityProperties.getMaximumSessions());
-        concurrentSessionControlStrategy.setExceptionIfMaximumExceeded(securityProperties.getMaxSessionsPreventsLogin());
-        return new ArrayList<>(Arrays.asList(
-                concurrentSessionControlStrategy,
-                new ChangeSessionIdAuthenticationStrategy(),
-                new RegisterSessionAuthenticationStrategy(sessionRegistry)
-        ));
     }
 
     @Override
