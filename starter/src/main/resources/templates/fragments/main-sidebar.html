@@ -1,0 +1,56 @@
+<!--suppress ALL-->
+<!--左侧区域-->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- 左侧企业Logo Brand Logo -->
+    <a href="index.html" class="brand-link">
+        <img th:src="@{/img/logo.png}"
+             alt="梦学谷"
+             class="brand-image img-circle elevation-3"
+             style="opacity: .8">
+        <span class="brand-text font-weight-light">梦学谷统一权限管理</span>
+    </a>
+    <!--  Sidebar -->
+    <div class="sidebar">
+        <!-- 左侧头像与名字 Sidebar user (optional)-->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img th:src="@{/adminlte/img/user2-160x160.jpg}" class="img-circle elevation-2" alt="User Image">
+            </div>
+            <div class="info">
+                <a href="#" class="d-block">梦老师</a>
+            </div>
+        </div>
+
+        <!-- 菜单列表 Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li
+                    th:class="${menu.path == null ? 'nav-item has-treeview menu-open' : 'nav-item has-treeview'}"
+                    th:each="menu : ${session.permissions?.menuList}"
+                >
+                    <a th:href="${menu.path != null ? menu.path : '#'}"
+                       th:class="${#strings.equals(activeUrl, menu.path) || (menu.children != null && !menu.children.isEmpty() && #strings.equals(menu.children[0].path, activeUrl)) ? 'nav-link active' : 'nav-link'}">
+                        <i th:class="|nav-icon fa ${menu.icon}|"></i>
+                        <p>
+                            <span th:text="${menu.menuName.zh_CN}"></span>
+                            <i class="right fas fa-angle-left" th:if="${menu.children != null && !menu.children.isEmpty()}"></i>
+                        </p>
+                    </a>
+
+                    <!-- 子菜单 -->
+                    <ul class="nav nav-treeview" th:if="${menu.children != null && !menu.children.isEmpty()}">
+                        <li class="nav-item" th:each="subMenu : ${menu.children}">
+                            <a th:href="@{${subMenu.path}}" th:class="${#strings.equals(activeUrl, subMenu.path) ? 'nav-link active' : 'nav-link'}">
+                                <i th:class="|fa ${subMenu.icon}|"></i>
+                                <p th:text="${subMenu.menuName.zh_CN}"></p>
+                            </a>
+                        </li>
+                    </ul>
+
+                </li>
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>

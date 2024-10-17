@@ -2,7 +2,7 @@ server:
   servlet:
     context-path: /
     session:
-      timeout: 1m
+      timeout: 10m
       cookie:
         # 必须配置，防止使用spring-session做session管理时导致相互间session不一致
         name: ORDER-WEB-SESSION-ID
@@ -128,6 +128,7 @@ security:
   image-code-token-parameter: image-code-token
   csrf-ignore-url-patterns:
     - /
+    - /404
     - /error
     - /adminlte/**
     - /plugins/**
@@ -142,6 +143,7 @@ security:
     - ${security.api-login.login-processing-url}
     - ${security.form-login.login-processing-url}
     - /
+    - /404
     - /error
     - /adminlte/**
     - /plugins/**

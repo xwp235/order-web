@@ -4,13 +4,18 @@ import com.xweb.starter.StarterApplication;
 import com.xweb.starter.common.constants.Constants;
 import com.xweb.starter.common.exception.enums.BusinessExceptionEnum;
 import com.xweb.starter.common.resp.JsonResp;
+import com.xweb.starter.utils.JsonUtil;
 import com.xweb.starter.utils.LogUtil;
 import com.xweb.starter.utils.MessageUtil;
+import com.xweb.starter.utils.RequestUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
@@ -24,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import java.io.IOException;
 import java.util.Objects;
 
 @ControllerAdvice
@@ -76,10 +82,15 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(NoResourceFoundException.class)
-    @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    public JsonResp noResourceFoundException() {
-        return JsonResp.error(MessageUtil.getMessage("error_resource_not_found")).setCode(HttpStatus.NOT_FOUND.value());
+    public void noResourceFoundException(HttpServletRequest request, HttpServletResponse resp) throws IOException {
+        if (RequestUtil.isAjaxRequest(request)) {
+            setResponseDetails(resp);
+            var result = JsonResp.error(MessageUtil.getMessage("error_resource_not_found")).setCode(HttpStatus.NOT_FOUND.value());
+            resp.getWriter().write(JsonUtil.obj2Json(result));
+        } else {
+            resp.sendRedirect("/404");
+        }
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
@@ -171,5 +182,12 @@ public class ControllerExceptionHandler {
         }
         return new RootErrorInfo(info.getLineNumber(),info.getClassName(),info.getMethodName());
     }
+
+    private void setResponseDetails(HttpServletResponse resp) {
+        resp.setStatus(HttpStatus.OK.value());
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType(MediaType.APPLICATION_JSON_VALUE);
+    }
+
 
 }

@@ -55,9 +55,9 @@ COMMENT ON COLUMN "public"."mast_menu"."mm_remark" IS '菜单备注';
 
 INSERT INTO "public"."mast_menu" ("id","mm_id", "mm_parent_id", "mm_type", "mm_method","mm_path", "mm_state", "mm_icon", "mm_name", "mm_code", "mm_level_chain", "mm_level", "mm_sort", "mm_remark", "mm_enable_edit", "mm_enable_delete", "create_time", "update_time")
 VALUES
-    ( 1, 1, NULL, 1,'get', '/dashboard', 1, 'DashboardOutlined', '{"zh_CN": "工作台"}', 'dashboard', '0', 1, 1, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
-    ( 2, 2, NULL, 1, NULL, NULL, 1, 'ProductOutlined', '{"zh_CN": "系统管理"}', 'system', '0', 1, 2, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
-    ( 3, 3, 2, 1, 'get','/user-manage', 1, 'UserOutlined', '{"zh_CN": "用户管理"}', 'system:users', '0.2', 2, 1, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
+    ( 1, 1, NULL, 1,'get', '/dashboard', 1, 'fa-home', '{"zh_CN": "工作台"}', 'dashboard', '0', 1, 1, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
+    ( 2, 2, NULL, 1, NULL, NULL, 1, 'fa-cogs', '{"zh_CN": "系统管理"}', 'system', '0', 1, 2, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
+    ( 3, 3, 2, 1, 'get','/user-manage', 1, 'fa-users', '{"zh_CN": "用户管理"}', 'system:users', '0.2', 2, 1, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
     ( 4, 4, 3, 2, 'get','/users', 1, NULL, '{"zh_CN": "查看列表"}', 'system:users@list', '0.2.3', 3, 1, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
     ( 5, 5, 3, 2, 'get','/users/{id:\\d+}', 1, NULL, '{"zh_CN": "查看详情"}', 'system:users@detail', '0.2.3', 3, 2, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
     ( 6, 6, 3, 2, 'post','/users/import', 1, NULL, '{"zh_CN": "用户数据导入"}', 'system:users@import', '0.2.3', 3, 3, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
@@ -66,8 +66,8 @@ VALUES
     ( 9, 9, 3, 2, 'put','/users/suspension', 1, NULL, '{"zh_CN": "禁用"}', 'system:users@suspension', '0.2.3', 3, 6, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
     ( 10, 10, 3, 2, 'post','/users', 1, NULL, '{"zh_CN": "创建"}', 'system:users@create', '0.2.3', 3, 7, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
     ( 11, 11, 3, 2,'put','/users/assignment', 1, NULL, '{"zh_CN": "分配角色"}', 'system:users@assign-roles', '0.2.3', 3, 8, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
-    ( 12, 12, NULL, 1, NULL, NULL, 1, 'TaskOutlined', '{"zh_CN": "任务管理"}', 'task', '0', 1, 3, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
-    ( 13, 13, 12, 1, 'get','/schedule-manage', 1, 'JobOutlined', '{"zh_CN": "定时任务"}', 'task:schedules', '0.12', 2, 1, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
+    ( 12, 12, NULL, 1, NULL, NULL, 1, 'fa-tasks', '{"zh_CN": "任务管理"}', 'task', '0', 1, 3, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
+    ( 13, 13, 12, 1, 'get','/schedule-manage', 1, 'fa-calendar', '{"zh_CN": "定时任务"}', 'task:schedules', '0.12', 2, 1, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
     ( 14, 14, 13, 2, 'get','/schedules', 1, NULL, '{"zh_CN": "查看列表"}', 'task:schedules@list', '0.12.13', 3, 1, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
     ( 15, 15, 13, 2, 'get','/schedules/{id:\\d+}', 1, NULL, '{"zh_CN": "查看详情"}', 'task:schedules@detail', '0.12.13', 3, 2, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
     ( 16, 16, 13, 2, 'post','/schedules', 1, NULL, '{"zh_CN": "创建"}', 'task:schedules@create', '0.12.13', 3, 3, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),

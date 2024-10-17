@@ -71,7 +71,7 @@ import java.util.Objects;
  */
 @Configuration
 @EnableConfigurationProperties(SecurityProperties.class)
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity(debug = false)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -121,7 +121,7 @@ public class SecurityConfig {
             // 在安全链开始前加入logback的输出日志对应ID
             .addFilterBefore(requestLogRecordFilter, DisableEncodeUrlFilter.class)
             // 检测图片验证码是否正确
-            .addFilterBefore(checkImageCodeFilter, SecurityContextHolderFilter.class)
+//            .addFilterBefore(checkImageCodeFilter, SecurityContextHolderFilter.class)
             // 检测用户是否登录，如果已经登录访问登录页时将其导向到首页
             .addFilterAfter(
                     checkLoginStateFilter,

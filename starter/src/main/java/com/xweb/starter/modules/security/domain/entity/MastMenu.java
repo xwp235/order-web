@@ -4,7 +4,7 @@ import com.xweb.starter.common.dbmappingtypes.MultiLanguage;
 import java.time.ZonedDateTime;
 
 /**
-* Created by Mybatis Generator on 2024/10/05 09:56
+* Created by Mybatis Generator on 2024/10/17 10:00
 */
 public class MastMenu {
     /**
@@ -30,6 +30,11 @@ public class MastMenu {
      * 菜单类型为菜单或页面时才需要设置
      */
     private String mmPath;
+
+    /**
+     * 请求方式
+     */
+    private String mmMethod;
 
     /**
      * 菜单状态  停用=0 启用=1,菜单类型为菜单或页面时才需要设置
@@ -125,6 +130,14 @@ public class MastMenu {
 
     public void setMmPath(String mmPath) {
         this.mmPath = mmPath;
+    }
+
+    public String getMmMethod() {
+        return mmMethod;
+    }
+
+    public void setMmMethod(String mmMethod) {
+        this.mmMethod = mmMethod;
     }
 
     public Short getMmState() {
@@ -234,6 +247,7 @@ public class MastMenu {
         sb.append(", mmParentId=").append(mmParentId);
         sb.append(", mmType=").append(mmType);
         sb.append(", mmPath=").append(mmPath);
+        sb.append(", mmMethod=").append(mmMethod);
         sb.append(", mmState=").append(mmState);
         sb.append(", mmIcon=").append(mmIcon);
         sb.append(", mmName=").append(mmName);

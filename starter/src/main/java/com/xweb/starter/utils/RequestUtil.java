@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -177,7 +178,11 @@ public class RequestUtil {
     }
 
     public static boolean isAjaxRequest(HttpServletRequest request) {
-        return StringUtils.equalsIgnoreCase("XMLHttpRequest", request.getHeader("X-Requested-With"));
+        String acceptHeader = null;
+        if (request != null) {
+            acceptHeader = request.getHeader(HttpHeaders.ACCEPT);
+        }
+        return acceptHeader != null && acceptHeader.contains(MediaType.APPLICATION_JSON_VALUE);
     }
 
 }

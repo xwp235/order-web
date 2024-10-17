@@ -15,7 +15,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -53,13 +52,7 @@ public class RateLimitAspect {
             // 获取当前请求的上下文
             var request = RequestUtil.getServletRequest();
             // 判断请求的类型
-            String acceptHeader = null;
-            if (request != null) {
-                acceptHeader = request.getHeader("Accept");
-            }
-            if (acceptHeader != null && acceptHeader.contains(MediaType.APPLICATION_JSON_VALUE)) {
-                throw new BusinessException(BusinessExceptionEnum.REQUEST_TOO_MANY);
-            } else {
+            if (!RequestUtil.isAjaxRequest(request)) {
                 // 如果是页面请求，重定向到“请求过多”页面
                 var response = RequestUtil.getServletResponse();
                 if (response != null) {
@@ -71,8 +64,8 @@ public class RateLimitAspect {
                     }
                     return null;
                 }
-                throw new BusinessException(BusinessExceptionEnum.REQUEST_TOO_MANY);
             }
+            throw new BusinessException(BusinessExceptionEnum.REQUEST_TOO_MANY);
         }
     }
 

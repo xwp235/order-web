@@ -1,19 +1,40 @@
 <!DOCTYPE html>
 <html
-        lang="zh"
         xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:th="https://www.thymeleaf.org"
-        xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ja">
 <head>
-    <title>Template</title>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta content="always" name="referrer">
+    <th:block th:replace="~{fragments/head :: public-css}"/>
+    <th:block th:replace="~{fragments/head :: bootstrap-table-css}"/>
+    <title>权限管理系统 - 控制台</title>
 </head>
-<body>
-  Backend Home page
-<form method="post" th:action="@{/logout}">
-    <button type="submit">退出</button>
-</form>
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed ">
+<!-- Site wrapper -->
+<div class="wrapper">
+
+    <!-- 头部区域 Navbar -->
+    <th:block th:replace="~{fragments/main-header}"/>
+
+    <!-- 左侧区域 Main Sidebar Container -->
+    <th:block th:replace="~{fragments/main-sidebar(activeUrl='/dashboard')}"/>
+
+    <!-- 右侧主区域 Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <img th:src="@{/img/index.jpg}" width="100%" height="100%">
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!--右底部区域-->
+    <!--右底部区域-->
+    <th:block th:replace="~{fragments/main-footer}"/>
+
+    <!-- 右上角工具栏 Control Sidebar -->
+    <th:block th:replace="~{fragments/control-sidebar}"/>
+    <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<th:block th:replace="~{fragments/script :: public-js}"/>
 </body>
 </html>
+

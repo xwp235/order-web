@@ -7,6 +7,7 @@
     <result column="mm_parent_id" jdbcType="INTEGER" property="mmParentId" />
     <result column="mm_type" jdbcType="SMALLINT" property="mmType" />
     <result column="mm_path" jdbcType="VARCHAR" property="mmPath" />
+    <result column="mm_method" jdbcType="VARCHAR" property="mmMethod" />
     <result column="mm_state" jdbcType="SMALLINT" property="mmState" />
     <result column="mm_icon" jdbcType="VARCHAR" property="mmIcon" />
     <result column="mm_name" jdbcType="OTHER" property="mmName" typeHandler="com.xweb.starter.common.typehandler.MultiLanguageTypeHandler" />
@@ -117,8 +118,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, mm_id, mm_parent_id, mm_type, mm_path, mm_state, mm_icon, mm_name, mm_code, mm_level_chain, 
-    mm_level, mm_sort, mm_remark, mm_enable_edit, mm_enable_delete, create_time, update_time
+    id, mm_id, mm_parent_id, mm_type, mm_path, mm_method, mm_state, mm_icon, mm_name, 
+    mm_code, mm_level_chain, mm_level, mm_sort, mm_remark, mm_enable_edit, mm_enable_delete, 
+    create_time, update_time
   </sql>
   <select id="selectByExample" parameterType="com.xweb.starter.modules.security.domain.entity.MastMenuExample" resultMap="BaseResultMap">
     select
@@ -152,15 +154,15 @@
   </delete>
   <insert id="insert" parameterType="com.xweb.starter.modules.security.domain.entity.MastMenu">
     insert into mast_menu (id, mm_id, mm_parent_id, 
-      mm_type, mm_path, mm_state, 
-      mm_icon, mm_name, 
+      mm_type, mm_path, mm_method, 
+      mm_state, mm_icon, mm_name, 
       mm_code, mm_level_chain, mm_level, 
       mm_sort, mm_remark, mm_enable_edit, 
       mm_enable_delete, create_time, update_time
       )
     values (#{id,jdbcType=BIGINT}, #{mmId,jdbcType=INTEGER}, #{mmParentId,jdbcType=INTEGER}, 
-      #{mmType,jdbcType=SMALLINT}, #{mmPath,jdbcType=VARCHAR}, #{mmState,jdbcType=SMALLINT}, 
-      #{mmIcon,jdbcType=VARCHAR}, #{mmName,jdbcType=OTHER,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler}, 
+      #{mmType,jdbcType=SMALLINT}, #{mmPath,jdbcType=VARCHAR}, #{mmMethod,jdbcType=VARCHAR}, 
+      #{mmState,jdbcType=SMALLINT}, #{mmIcon,jdbcType=VARCHAR}, #{mmName,jdbcType=OTHER,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler}, 
       #{mmCode,jdbcType=VARCHAR}, #{mmLevelChain,jdbcType=VARCHAR}, #{mmLevel,jdbcType=INTEGER}, 
       #{mmSort,jdbcType=INTEGER}, #{mmRemark,jdbcType=VARCHAR}, #{mmEnableEdit,jdbcType=BIT}, 
       #{mmEnableDelete,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
@@ -183,6 +185,9 @@
       </if>
       <if test="mmPath != null">
         mm_path,
+      </if>
+      <if test="mmMethod != null">
+        mm_method,
       </if>
       <if test="mmState != null">
         mm_state,
@@ -236,6 +241,9 @@
       </if>
       <if test="mmPath != null">
         #{mmPath,jdbcType=VARCHAR},
+      </if>
+      <if test="mmMethod != null">
+        #{mmMethod,jdbcType=VARCHAR},
       </if>
       <if test="mmState != null">
         #{mmState,jdbcType=SMALLINT},
@@ -299,6 +307,9 @@
       <if test="row.mmPath != null">
         mm_path = #{row.mmPath,jdbcType=VARCHAR},
       </if>
+      <if test="row.mmMethod != null">
+        mm_method = #{row.mmMethod,jdbcType=VARCHAR},
+      </if>
       <if test="row.mmState != null">
         mm_state = #{row.mmState,jdbcType=SMALLINT},
       </if>
@@ -347,6 +358,7 @@
       mm_parent_id = #{row.mmParentId,jdbcType=INTEGER},
       mm_type = #{row.mmType,jdbcType=SMALLINT},
       mm_path = #{row.mmPath,jdbcType=VARCHAR},
+      mm_method = #{row.mmMethod,jdbcType=VARCHAR},
       mm_state = #{row.mmState,jdbcType=SMALLINT},
       mm_icon = #{row.mmIcon,jdbcType=VARCHAR},
       mm_name = #{row.mmName,jdbcType=OTHER,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler},
@@ -377,6 +389,9 @@
       </if>
       <if test="mmPath != null">
         mm_path = #{mmPath,jdbcType=VARCHAR},
+      </if>
+      <if test="mmMethod != null">
+        mm_method = #{mmMethod,jdbcType=VARCHAR},
       </if>
       <if test="mmState != null">
         mm_state = #{mmState,jdbcType=SMALLINT},
@@ -423,6 +438,7 @@
       mm_parent_id = #{mmParentId,jdbcType=INTEGER},
       mm_type = #{mmType,jdbcType=SMALLINT},
       mm_path = #{mmPath,jdbcType=VARCHAR},
+      mm_method = #{mmMethod,jdbcType=VARCHAR},
       mm_state = #{mmState,jdbcType=SMALLINT},
       mm_icon = #{mmIcon,jdbcType=VARCHAR},
       mm_name = #{mmName,jdbcType=OTHER,typeHandler=com.xweb.starter.common.typehandler.MultiLanguageTypeHandler},

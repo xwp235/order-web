@@ -1,5 +1,21 @@
-<th:block th:fragment="public-meta">
+<th:block th:fragment="public-css">
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta content="always" name="referrer">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <link th:href="@{/plugins/fontawesome-free/css/all.min.css}" rel="stylesheet">
+    <link th:href="@{/plugins/overlayScrollbars/css/OverlayScrollbars.min.css}" rel="stylesheet"/>
+    <link th:href="@{/adminlte/css/adminlte.min.css}" rel="stylesheet">
+</th:block>
+
+<!-- bootstrap-table 树形表格样式 -->
+<th:block th:fragment="bootstrap-table-css">
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap-table/1.14.1/dist/bootstrap-table.min.css}"/>
+    <link rel="stylesheet" th:href="@{/webjars/jquery-treegrid/0.3.0/css/jquery.treegrid.css}">
+</th:block>
+
+<!--ztree-css 树插件样式 -->
+<th:block th:fragment="ztree-css">
+    <link rel="stylesheet" th:href="@{/plugins/jquery-zTree/3.5.37/css/metroStyle/metroStyle.css}" type="text/css">
 </th:block>

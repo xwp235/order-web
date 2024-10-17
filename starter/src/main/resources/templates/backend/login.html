@@ -5,12 +5,8 @@
         xmlns:th="https://www.thymeleaf.org"
         xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
     <head>
-        <th:block th:replace="~{fragments/head :: public-meta}"/>
+        <th:block th:replace="~{fragments/head :: public-css}"/>
         <title>权限管理系统 - 登录</title>
-        <!-- Font Awesome -->
-        <link th:href="@{/plugins/fontawesome-free/css/all.min.css}" rel="stylesheet">
-        <!-- Theme style -->
-        <link th:href="@{/adminlte/css/adminlte.min.css}" rel="stylesheet">
     </head>
 
     <body class="hold-transition login-page">

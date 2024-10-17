@@ -450,6 +450,76 @@ public class MastMenuExample {
             return (Criteria) this;
         }
 
+        public Criteria andMmMethodIsNull() {
+            addCriterion("mm_method is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMmMethodIsNotNull() {
+            addCriterion("mm_method is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMmMethodEqualTo(String value) {
+            addCriterion("mm_method =", value, "mmMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andMmMethodNotEqualTo(String value) {
+            addCriterion("mm_method <>", value, "mmMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andMmMethodGreaterThan(String value) {
+            addCriterion("mm_method >", value, "mmMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andMmMethodGreaterThanOrEqualTo(String value) {
+            addCriterion("mm_method >=", value, "mmMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andMmMethodLessThan(String value) {
+            addCriterion("mm_method <", value, "mmMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andMmMethodLessThanOrEqualTo(String value) {
+            addCriterion("mm_method <=", value, "mmMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andMmMethodLike(String value) {
+            addCriterion("mm_method like", value, "mmMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andMmMethodNotLike(String value) {
+            addCriterion("mm_method not like", value, "mmMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andMmMethodIn(List<String> values) {
+            addCriterion("mm_method in", values, "mmMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andMmMethodNotIn(List<String> values) {
+            addCriterion("mm_method not in", values, "mmMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andMmMethodBetween(String value1, String value2) {
+            addCriterion("mm_method between", value1, value2, "mmMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andMmMethodNotBetween(String value1, String value2) {
+            addCriterion("mm_method not between", value1, value2, "mmMethod");
+            return (Criteria) this;
+        }
+
         public Criteria andMmStateIsNull() {
             addCriterion("mm_state is null");
             return (Criteria) this;

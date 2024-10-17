@@ -33,21 +33,36 @@ public class PermissionMetadataSource implements FilterInvocationSecurityMetadat
 
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
-        var request = (HttpServletRequest) object;
-        var requestURI = request.getRequestURI();
-        var requestMethod = request.getMethod();
+        var request = (HttpServletRequest)object;
+        return getRequiredAttributes(request.getRequestURI(), request.getMethod(),true);
+    }
 
+    /**
+     *
+     * @param requestURI 匹配请求路径
+     * @param requestMethod 匹配请求方式
+     * @param fromRequest 是否来自http请求
+     */
+    public Collection<ConfigAttribute> getRequiredAttributes(String requestURI, String requestMethod, boolean fromRequest) {
         // 从权限服务中加载 URL 对应的权限
         PathPattern pattern;
+        String dbRequestURI;
         var matchedRequestURI = "";
         for (var urlKey : permissionMap.keySet()) {
 
             var urlKeyArr = StringUtils.split(urlKey, Constants.AUTHORIZE_PERMISSION_METADATA_SOURCE_PERMISSION_KEY_DELIMITER);
             var mapRequestMethod = urlKeyArr[0];
-            pattern = parser.parse(urlKeyArr[1]);
 
-            var matched = StringUtils.equalsIgnoreCase(mapRequestMethod, requestMethod) &&
-                    pattern.matches(PathContainer.parsePath(requestURI));
+            boolean matched;
+            if (fromRequest) {
+                pattern = parser.parse(urlKeyArr[1]);
+                matched = StringUtils.equalsIgnoreCase(mapRequestMethod, requestMethod) &&
+                        pattern.matches(PathContainer.parsePath(requestURI));
+            } else {
+                dbRequestURI = urlKeyArr[1];
+                matched = StringUtils.equalsIgnoreCase(mapRequestMethod, requestMethod) &&
+                        StringUtils.equals(dbRequestURI,requestURI);
+            }
             if (matched) {
                 matchedRequestURI = urlKey;
                 break;

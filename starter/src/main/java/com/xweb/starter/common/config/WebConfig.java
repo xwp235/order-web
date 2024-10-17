@@ -3,6 +3,7 @@ package com.xweb.starter.common.config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -15,6 +16,14 @@ public class WebConfig implements WebMvcConfigurer {
 //    }
 
     @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("/webjars/")
+                .resourceChain(false);
+//        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
+    }
+
+    @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("backend/login");
         registry.addViewController("/session-expired").setViewName("session-expired");
@@ -22,6 +31,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/too-many-requests").setViewName("too-many-requests");
         registry.addViewController("/").setViewName("invalid-session");
         registry.addViewController("/403").setViewName("403");
+        registry.addViewController("/404").setViewName("404");
     }
 
     @Override
