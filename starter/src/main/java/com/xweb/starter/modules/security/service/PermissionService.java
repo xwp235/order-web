@@ -107,6 +107,7 @@ public class PermissionService {
                 generateTreeMenu(childrenMenuList,topMenu.getId());
             }
             topMenu.setChildren(childrenMenuList);
+            topMenu.setChildrenPath(childrenMenuList.stream().map(MenuVO::getPath).toList());
         }
         return menuList;
     }

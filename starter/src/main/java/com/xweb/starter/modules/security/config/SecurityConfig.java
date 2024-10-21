@@ -72,7 +72,7 @@ import java.util.Objects;
  */
 @Configuration
 @EnableConfigurationProperties(SecurityProperties.class)
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity(debug = false)
 @RequiredArgsConstructor
 public class SecurityConfig {
 

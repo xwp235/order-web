@@ -14,7 +14,7 @@
   <th:block th:replace="~{fragments/main-header}"/>
 
   <!-- 左侧区域 Main Sidebar Container -->
-  <th:block th:replace="~{fragments/main-sidebar(activeUrl='/menus')}"/>
+  <th:block th:replace="~{fragments/main-sidebar :: aside('/menu-manage')}"/>
 
   <!-- 内容区域 start-->
   <div class="content-wrapper text-sm">

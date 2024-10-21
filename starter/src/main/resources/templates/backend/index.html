@@ -16,7 +16,7 @@
     <th:block th:replace="~{fragments/main-header}"/>
 
     <!-- 左侧区域 Main Sidebar Container -->
-    <th:block th:replace="~{fragments/main-sidebar(activeUrl='/dashboard')}"/>
+    <th:block th:replace="~{fragments/main-sidebar :: aside('/dashboard')}"/>
 
     <!-- 右侧主区域 Content Wrapper. Contains page content -->
     <div class="content-wrapper">

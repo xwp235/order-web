@@ -34,17 +34,34 @@ public final class SimpleCompositeInvalidSessionStrategy implements InvalidSessi
 
     @Override
     public void onInvalidSessionDetected(HttpServletRequest request, HttpServletResponse response) throws IOException {
-          if (RequestUtil.isAjaxRequest(request)){
-              setResponseDetails(response);
-              var result = JsonResp.error(MessageUtil.getMessage("info_invalid_session")).setCode(HttpStatus.UNAUTHORIZED.value());
-              response.getWriter().write(JsonUtil.obj2Json(result));
-          } else {
-              if (this.logger.isDebugEnabled()) {
-                  this.logger.debug("Starting new session (if required) and redirecting to '" + this.destinationUrl + "'");
-              }
-              request.getSession();
-              redirectStrategy.sendRedirect(request, response, this.destinationUrl);
-          }
+        // fix: 访问不存在的路由时授权失败也会走到此处，授权失败则不应该删除客户端cookie
+        var stacktrace = Thread.currentThread().getStackTrace()[2];
+        var isFromAccessDenied = stacktrace.getClassName().contains("InvalidSessionAccessDeniedHandler");
+        if (!isFromAccessDenied) {
+            if (RequestUtil.isAjaxRequest(request)){
+                setResponseDetails(response);
+                var result = JsonResp.error(MessageUtil.getMessage("info_invalid_session")).setCode(HttpStatus.UNAUTHORIZED.value());
+                response.getWriter().write(JsonUtil.obj2Json(result));
+            } else {
+                if (this.logger.isDebugEnabled()) {
+                    this.logger.debug("Starting new session (if required) and redirecting to '" + this.destinationUrl + "'");
+                }
+                request.getSession();
+                redirectStrategy.sendRedirect(request, response, this.destinationUrl);
+            }
+        } else {
+            if (RequestUtil.isAjaxRequest(request)){
+                setResponseDetails(response);
+                var result = JsonResp.error(MessageUtil.getMessage("error_resource_not_found")).setCode(HttpStatus.NOT_FOUND.value());
+                response.getWriter().write(JsonUtil.obj2Json(result));
+            } else {
+                if (this.logger.isDebugEnabled()) {
+                    this.logger.debug("Starting new session (if required) and redirecting to '" + this.destinationUrl + "'");
+                }
+                request.getSession();
+                redirectStrategy.sendRedirect(request, response, "/404");
+            }
+        }
     }
 
     private void setResponseDetails(HttpServletResponse resp) {

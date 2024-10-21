@@ -20,5 +20,7 @@ public class MenuVO {
     private String levelChain;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<MenuVO> children;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> childrenPath;
 
 }

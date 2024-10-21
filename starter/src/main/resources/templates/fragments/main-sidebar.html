@@ -1,6 +1,6 @@
 <!--suppress ALL-->
 <!--左侧区域-->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-primary elevation-4" th:fragment="aside(activeUrl)">
     <!-- 左侧企业Logo Brand Logo -->
     <a href="index.html" class="brand-link">
         <img th:src="@{/img/logo.png}"
@@ -29,7 +29,8 @@
                     th:each="menu : ${session.permissions?.menuList}"
                 >
                     <a th:href="${menu.path != null ? menu.path : '#'}"
-                       th:class="${#strings.equals(activeUrl, menu.path) || (menu.children != null && !menu.children.isEmpty() && #strings.equals(menu.children[0].path, activeUrl)) ? 'nav-link active' : 'nav-link'}">
+                       th:class="${#strings.equals(activeUrl, menu.path) || (menu.children != null && !menu.childrenPath.isEmpty() && #lists.contains(menu.childrenPath, activeUrl)) ? 'nav-link active' : 'nav-link'}">
+<!--                       th:class="${#strings.equals(activeUrl, menu.path) || (menu.children != null && !menu.children.isEmpty() && #strings.equals(menu.children[0].path, activeUrl)) ? 'nav-link active' : 'nav-link'}">-->
                         <i th:class="|nav-icon fa ${menu.icon}|"></i>
                         <p>
                             <span th:text="${menu.menuName.zh_CN}"></span>
