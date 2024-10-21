@@ -82,13 +82,13 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(NoResourceFoundException.class)
-    @ResponseStatus(HttpStatus.OK)
     public void noResourceFoundException(HttpServletRequest request, HttpServletResponse resp) throws IOException {
         if (RequestUtil.isAjaxRequest(request)) {
             setResponseDetails(resp);
             var result = JsonResp.error(MessageUtil.getMessage("error_resource_not_found")).setCode(HttpStatus.NOT_FOUND.value());
             resp.getWriter().write(JsonUtil.obj2Json(result));
         } else {
+            resp.setStatus(HttpStatus.NOT_FOUND.value());
             resp.sendRedirect("/404");
         }
     }

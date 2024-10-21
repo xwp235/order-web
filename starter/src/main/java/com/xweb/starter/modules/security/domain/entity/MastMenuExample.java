@@ -1160,6 +1160,66 @@ public class MastMenuExample {
             return (Criteria) this;
         }
 
+        public Criteria andMmRequireAuthIsNull() {
+            addCriterion("mm_require_auth is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMmRequireAuthIsNotNull() {
+            addCriterion("mm_require_auth is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMmRequireAuthEqualTo(Boolean value) {
+            addCriterion("mm_require_auth =", value, "mmRequireAuth");
+            return (Criteria) this;
+        }
+
+        public Criteria andMmRequireAuthNotEqualTo(Boolean value) {
+            addCriterion("mm_require_auth <>", value, "mmRequireAuth");
+            return (Criteria) this;
+        }
+
+        public Criteria andMmRequireAuthGreaterThan(Boolean value) {
+            addCriterion("mm_require_auth >", value, "mmRequireAuth");
+            return (Criteria) this;
+        }
+
+        public Criteria andMmRequireAuthGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("mm_require_auth >=", value, "mmRequireAuth");
+            return (Criteria) this;
+        }
+
+        public Criteria andMmRequireAuthLessThan(Boolean value) {
+            addCriterion("mm_require_auth <", value, "mmRequireAuth");
+            return (Criteria) this;
+        }
+
+        public Criteria andMmRequireAuthLessThanOrEqualTo(Boolean value) {
+            addCriterion("mm_require_auth <=", value, "mmRequireAuth");
+            return (Criteria) this;
+        }
+
+        public Criteria andMmRequireAuthIn(List<Boolean> values) {
+            addCriterion("mm_require_auth in", values, "mmRequireAuth");
+            return (Criteria) this;
+        }
+
+        public Criteria andMmRequireAuthNotIn(List<Boolean> values) {
+            addCriterion("mm_require_auth not in", values, "mmRequireAuth");
+            return (Criteria) this;
+        }
+
+        public Criteria andMmRequireAuthBetween(Boolean value1, Boolean value2) {
+            addCriterion("mm_require_auth between", value1, value2, "mmRequireAuth");
+            return (Criteria) this;
+        }
+
+        public Criteria andMmRequireAuthNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("mm_require_auth not between", value1, value2, "mmRequireAuth");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateTimeIsNull() {
             addCriterion("create_time is null");
             return (Criteria) this;

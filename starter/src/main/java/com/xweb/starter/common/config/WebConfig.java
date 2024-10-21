@@ -1,19 +1,25 @@
 package com.xweb.starter.common.config;
 
+import com.xweb.starter.modules.security.dao.MenuDao;
+import com.xweb.starter.modules.security.interceptor.ViewRenderedInterceptor;
+import com.xweb.starter.modules.security.service.PermissionService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 
 @Configuration
+@RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
+    private final PermissionService permissionService;
+    private final MenuDao menuDao;
 
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//    }
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new ViewRenderedInterceptor(permissionService))
+                .addPathPatterns(menuDao.needAuthenticationUrlPath());
+    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

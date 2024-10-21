@@ -56,6 +56,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
+        <!-- https://github.com/thymeleaf/thymeleaf-extras-springsecurity -->
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity6</artifactId>
+        </dependency>
         <!--只能加在启动类所在的模块中 否则热部署无效-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

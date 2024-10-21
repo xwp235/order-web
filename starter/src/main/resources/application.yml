@@ -127,9 +127,9 @@ security:
   image-code-parameter: image-code
   image-code-token-parameter: image-code-token
   csrf-ignore-url-patterns:
+    - /favicon.ico
     - /
-    - /404
-    - /error
+    - /error/**
     - /adminlte/**
     - /plugins/**
     - /img/**
@@ -137,19 +137,6 @@ security:
     - ${security.invalid-session-url}
     - ${security.expired-session-url}
     - ${security.access-denied-url}
-    - /too-many-requests
-    - /kaptcha/**
-  white-url-patterns:
-    - ${security.api-login.login-processing-url}
-    - ${security.form-login.login-processing-url}
-    - /
-    - /404
-    - /error
-    - /adminlte/**
-    - /plugins/**
-    - /img/**
-    - ${security.invalid-session-url}
-    - ${security.expired-session-url}
     - /too-many-requests
     - /kaptcha/**
   form-login:

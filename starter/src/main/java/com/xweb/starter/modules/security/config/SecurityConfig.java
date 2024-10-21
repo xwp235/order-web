@@ -14,6 +14,7 @@ import com.xweb.starter.modules.security.config.properties.SecurityProperties;
 import com.xweb.starter.modules.security.config.strategy.SimpleCompositeInvalidSessionStrategy;
 import com.xweb.starter.modules.security.config.strategy.SimpleCompositeSessionInformationExpiredStrategy;
 import com.xweb.starter.modules.security.dao.HisClientLoginLogDao;
+import com.xweb.starter.modules.security.dao.MenuDao;
 import com.xweb.starter.modules.security.dao.RoleDao;
 import com.xweb.starter.utils.JsonUtil;
 import com.xweb.starter.utils.RequestUtil;
@@ -71,7 +72,7 @@ import java.util.Objects;
  */
 @Configuration
 @EnableConfigurationProperties(SecurityProperties.class)
-@EnableWebSecurity(debug = false)
+@EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -91,12 +92,14 @@ public class SecurityConfig {
             CheckImageCodeFilter checkImageCodeFilter,
             ObjectMapper objectMapper,
             HisClientLoginLogDao clientLoginLogDao,
+            MenuDao menuDao,
             PersistentTokenRepository persistentTokenRepository
     ) throws Exception {
 
         var authorizationFilter = new AuthorizationFilter(new CompositeAuthorizationManager(metadataSource));
         authorizationFilter.setAuthorizationEventPublisher(new SpringAuthorizationEventPublisher(applicationContext));
         authorizationFilter.setSecurityContextHolderStrategy(SecurityContextHolder.getContextHolderStrategy());
+        var needAuthenticationPaths = menuDao.needAuthenticationUrlPath();
 
         http
             // 禁止匿名用户登录
@@ -115,8 +118,8 @@ public class SecurityConfig {
             .csrf(csrf-> csrf.ignoringRequestMatchers(securityProperties.getCsrfIgnoreUrlPatterns()))
             // 认证授权路径配置
             .authorizeHttpRequests(requests -> {
-                requests.requestMatchers(securityProperties.getWhiteUrlPatterns()).permitAll();
-                requests.anyRequest().authenticated();
+                requests.requestMatchers(needAuthenticationPaths).authenticated()
+                        .anyRequest().permitAll();
             })
             // 在安全链开始前加入logback的输出日志对应ID
             .addFilterBefore(requestLogRecordFilter, DisableEncodeUrlFilter.class)
@@ -250,11 +253,11 @@ public class SecurityConfig {
     static RoleHierarchy roleHierarchy(RoleDao roleDao) {
         var weightRoleList = roleDao.selectRolesOrderByWeightDesc();
         var roleList = weightRoleList.stream().map(role-> role.getMrId().substring(Constants.ROLE_PREFIX.length())).toList();
-        RoleHierarchyImpl.Builder roleHierarchy = RoleHierarchyImpl.withRolePrefix(Constants.ROLE_PREFIX);
+        var roleHierarchy = RoleHierarchyImpl.withRolePrefix(Constants.ROLE_PREFIX);
         // 遍历角色列表，动态构建 implies 关系
-        for (int i = 0; i < roleList.size() - 1; i++) {
-            String currentRole = roleList.get(i);
-            String impliedRole = roleList.get(i + 1);
+        for (var i = 0; i < roleList.size() - 1; i++) {
+            var currentRole = roleList.get(i);
+            var impliedRole = roleList.get(i + 1);
 
             // 动态构建权限层级
             roleHierarchy = roleHierarchy.role(currentRole).implies(impliedRole);
@@ -271,7 +274,7 @@ public class SecurityConfig {
 
     @Bean
     PersistentTokenRepository persistentTokenRepository(DataSource dataSource) {
-        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+        var tokenRepository = new JdbcTokenRepositoryImpl();
         tokenRepository.setDataSource(dataSource);
         // tokenRepository.setCreateTableOnStartup(true);  // Uncomment this line if you want to create the table on startup
         return tokenRepository;

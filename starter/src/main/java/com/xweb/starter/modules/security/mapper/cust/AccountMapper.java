@@ -138,6 +138,7 @@ public interface AccountMapper {
           WHERE
             mm_path IS NOT NULL
             AND mm_state = 1
+            AND mm_require_auth = true
     """)
     @Results({
             @Result(property = "permissionKey", column = "mm_code",jdbcType = JdbcType.VARCHAR),

@@ -1,4 +1,4 @@
-package com.xweb.starter.modules.schedule.jobs;
+package com.xweb.starter.modules.schedules.jobs;
 
 import com.xweb.starter.modules.security.HttpSessionUtil;
 import com.xweb.starter.modules.security.SecureUserHolder;

@@ -39,7 +39,7 @@ public class PermissionService {
         for (var everyMenu: allMenus) {
             var path = everyMenu.getMmPath();
             var method = everyMenu.getMmMethod();
-            if (StringUtils.isAnyBlank(path,method)) {
+            if (StringUtils.isAnyBlank(path,method) || !everyMenu.getMmRequireAuth()) {
                 authorizedMenus.add(everyMenu);
                 continue;
             }

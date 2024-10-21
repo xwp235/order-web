@@ -1,4 +1,4 @@
-package com.xweb.starter.modules.schedule.resp;
+package com.xweb.starter.modules.schedules.resp;
 
 import lombok.Data;
 import org.quartz.DateBuilder;

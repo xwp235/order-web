@@ -1,7 +1,7 @@
-package com.xweb.starter.modules.schedule.service;
+package com.xweb.starter.modules.schedules.service;
 
-import com.xweb.starter.modules.schedule.req.JobReq;
-import com.xweb.starter.modules.schedule.resp.JobResp;
+import com.xweb.starter.modules.schedules.req.JobReq;
+import com.xweb.starter.modules.schedules.resp.JobResp;
 
 import java.util.Date;
 

@@ -4,7 +4,7 @@ import com.xweb.starter.common.dbmappingtypes.MultiLanguage;
 import java.time.ZonedDateTime;
 
 /**
-* Created by Mybatis Generator on 2024/10/17 10:00
+* Created by Mybatis Generator on 2024/10/20 09:43
 */
 public class MastMenu {
     /**
@@ -83,6 +83,10 @@ public class MastMenu {
     /**
      */
     private Boolean mmEnableDelete;
+
+    /**
+     */
+    private Boolean mmRequireAuth;
 
     /**
      */
@@ -220,6 +224,14 @@ public class MastMenu {
         this.mmEnableDelete = mmEnableDelete;
     }
 
+    public Boolean getMmRequireAuth() {
+        return mmRequireAuth;
+    }
+
+    public void setMmRequireAuth(Boolean mmRequireAuth) {
+        this.mmRequireAuth = mmRequireAuth;
+    }
+
     public ZonedDateTime getCreateTime() {
         return createTime;
     }
@@ -258,6 +270,7 @@ public class MastMenu {
         sb.append(", mmRemark=").append(mmRemark);
         sb.append(", mmEnableEdit=").append(mmEnableEdit);
         sb.append(", mmEnableDelete=").append(mmEnableDelete);
+        sb.append(", mmRequireAuth=").append(mmRequireAuth);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
         sb.append("]");

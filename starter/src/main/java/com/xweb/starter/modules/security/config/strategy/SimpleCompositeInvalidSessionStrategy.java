@@ -34,7 +34,6 @@ public final class SimpleCompositeInvalidSessionStrategy implements InvalidSessi
 
     @Override
     public void onInvalidSessionDetected(HttpServletRequest request, HttpServletResponse response) throws IOException {
-          cancelCookie(request,response);
           if (RequestUtil.isAjaxRequest(request)){
               setResponseDetails(response);
               var result = JsonResp.error(MessageUtil.getMessage("info_invalid_session")).setCode(HttpStatus.UNAUTHORIZED.value());
@@ -54,6 +53,9 @@ public final class SimpleCompositeInvalidSessionStrategy implements InvalidSessi
         resp.setContentType(MediaType.APPLICATION_JSON_VALUE);
     }
 
+    /**
+     * 删除浏览器端cookie
+     */
     private void cancelCookie(HttpServletRequest request, HttpServletResponse response) {
         var cookie = new Cookie(cookieName, null);
         // 设置为0cookie就会被删除

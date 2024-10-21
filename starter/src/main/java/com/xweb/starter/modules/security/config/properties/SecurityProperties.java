@@ -15,8 +15,6 @@ public class SecurityProperties {
 
     private String[] csrfIgnoreUrlPatterns;
 
-    private String[] whiteUrlPatterns;
-
     private Integer maximumSessions;
 
     private Boolean maxSessionsPreventsLogin;

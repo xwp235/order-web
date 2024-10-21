@@ -1,4 +1,4 @@
-package com.xweb.starter.modules.schedule.req;
+package com.xweb.starter.modules.schedules.req;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

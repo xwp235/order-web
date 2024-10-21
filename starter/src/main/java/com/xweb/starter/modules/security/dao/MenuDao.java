@@ -7,4 +7,7 @@ import java.util.List;
 public interface MenuDao {
 
     List<MastMenu> selectValidMenus();
+
+    String[]  needAuthenticationUrlPath();
+
 }

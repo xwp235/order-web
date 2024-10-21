@@ -1,4 +1,4 @@
-package com.xweb.starter.modules.schedule.req;
+package com.xweb.starter.modules.schedules.req;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

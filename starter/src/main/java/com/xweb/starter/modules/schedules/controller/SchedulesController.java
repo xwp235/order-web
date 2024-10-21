@@ -1,15 +1,15 @@
-package com.xweb.starter.modules.schedule.controller;
+package com.xweb.starter.modules.schedules.controller;
 
 import com.xweb.starter.common.resp.JsonResp;
-import com.xweb.starter.modules.schedule.req.JobReq;
-import com.xweb.starter.modules.schedule.service.SchedulerService;
+import com.xweb.starter.modules.schedules.req.JobReq;
+import com.xweb.starter.modules.schedules.service.SchedulerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("schedules")
-public class ScheduleController {
+public class SchedulesController {
 
     private final SchedulerService schedulerService;
 

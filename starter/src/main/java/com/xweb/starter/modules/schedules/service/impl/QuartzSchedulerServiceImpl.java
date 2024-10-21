@@ -1,11 +1,11 @@
-package com.xweb.starter.modules.schedule.service.impl;
+package com.xweb.starter.modules.schedules.service.impl;
 
-import com.xweb.starter.modules.schedule.req.CronJobReq;
-import com.xweb.starter.modules.schedule.req.DailyTimeJobReq;
-import com.xweb.starter.modules.schedule.req.JobReq;
-import com.xweb.starter.modules.schedule.req.SimpleJobReq;
-import com.xweb.starter.modules.schedule.resp.JobResp;
-import com.xweb.starter.modules.schedule.service.SchedulerService;
+import com.xweb.starter.modules.schedules.req.CronJobReq;
+import com.xweb.starter.modules.schedules.req.DailyTimeJobReq;
+import com.xweb.starter.modules.schedules.req.JobReq;
+import com.xweb.starter.modules.schedules.req.SimpleJobReq;
+import com.xweb.starter.modules.schedules.resp.JobResp;
+import com.xweb.starter.modules.schedules.service.SchedulerService;
 import com.xweb.starter.utils.LogUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
