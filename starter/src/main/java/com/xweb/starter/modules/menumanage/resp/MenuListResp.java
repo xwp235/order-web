@@ -1,6 +1,5 @@
-package com.xweb.starter.modules.menus.resp;
+package com.xweb.starter.modules.menumanage.resp;
 
-import com.xweb.starter.common.dbmappingtypes.MultiLanguage;
 import lombok.Data;
 
 @Data

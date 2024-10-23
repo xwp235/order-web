@@ -61,7 +61,7 @@ VALUES
 
     ( 3, 3, 2, 1, 'get','/user-manage', 1, 'fa-users', '{"zh_CN": "用户管理"}', 'system:users', '0.2', 2, 1, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
     ( 4, 4, 3, 2, 'get','/users', 1, NULL, '{"zh_CN": "查看列表"}', 'system:users@list', '0.2.3', 3, 1, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
-    ( 5, 5, 3, 2, 'get','/users/{id:\\d+}', 1, NULL, '{"zh_CN": "查看详情"}', 'system:users@detail', '0.2.3', 3, 2, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
+    ( 5, 5, 3, 2, 'get','/users/{id:\d+}', 1, NULL, '{"zh_CN": "查看详情"}', 'system:users@detail', '0.2.3', 3, 2, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
     ( 6, 6, 3, 2, 'post','/users/import', 1, NULL, '{"zh_CN": "用户数据导入"}', 'system:users@import', '0.2.3', 3, 3, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
     ( 7, 7, 3, 2, 'put','/users', 1, NULL, '{"zh_CN": "编辑"}', 'system:users@update', '0.2.3', 3, 4, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
     ( 8, 8, 3, 2, 'delete','/users', 1, NULL, '{"zh_CN": "删除"}', 'system:users@delete', '0.2.3', 3, 5, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
@@ -72,7 +72,7 @@ VALUES
     ( 12, 12, NULL, 1, NULL, NULL, 1, 'fa-tasks', '{"zh_CN": "任务管理"}', 'task', '0', 1, 3, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
     ( 13, 13, 12, 1, 'get','/schedule-manage', 1, 'fa-calendar', '{"zh_CN": "定时任务"}', 'task:schedules', '0.12', 2, 1, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
     ( 14, 14, 13, 2, 'get','/schedules', 1, NULL, '{"zh_CN": "查看列表"}', 'task:schedules@list', '0.12.13', 3, 1, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
-    ( 15, 15, 13, 2, 'get','/schedules/{id:\\d+}', 1, NULL, '{"zh_CN": "查看详情"}', 'task:schedules@detail', '0.12.13', 3, 2, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
+    ( 15, 15, 13, 2, 'get','/schedules/{id:\d+}', 1, NULL, '{"zh_CN": "查看详情"}', 'task:schedules@detail', '0.12.13', 3, 2, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
     ( 16, 16, 13, 2, 'post','/schedules', 1, NULL, '{"zh_CN": "创建"}', 'task:schedules@create', '0.12.13', 3, 3, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
     ( 17, 17, 13, 2, 'put','/schedules', 1, NULL, '{"zh_CN": "编辑"}', 'task:schedules@update', '0.12.13', 3, 4, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
     ( 18, 18, 13, 2, 'delete','/schedules', 1, NULL, '{"zh_CN": "删除"}', 'task:schedules@delete', '0.12.13', 3, 5, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
@@ -80,11 +80,13 @@ VALUES
 
     ( 20, 20, 2, 1, 'get','/menu-manage', 1, 'fa-th-large', '{"zh_CN": "菜单管理"}', 'system:menus', '0.2', 2, 2, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
     ( 21, 21, 20, 2, 'get','/menus', 1, NULL, '{"zh_CN": "查看列表"}', 'system:menus@list', '0.2.20', 3, 1, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
-    ( 22, 22, 20, 2, 'get','/menus/{id:\\d+}', 1, NULL, '{"zh_CN": "查看详情"}', 'system:menus@detail', '0.2.20', 3, 2, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
+    ( 22, 22, 20, 2, 'get','/menus/{id:\d+}', 1, NULL, '{"zh_CN": "查看详情"}', 'system:menus@detail', '0.2.20', 3, 2, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
     ( 23, 23, 20, 2, 'put','/menus', 1, NULL, '{"zh_CN": "编辑"}', 'system:menus@update', '0.2.20', 3, 3, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
     ( 24, 24, 20, 2, 'delete','/menus', 1, NULL, '{"zh_CN": "删除"}', 'system:menus@delete', '0.2.20', 3, 4, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
     ( 25, 25, 20, 2, 'patch','/menus/suspension', 1, NULL, '{"zh_CN": "禁用"}', 'system:menus@suspension', '0.2.20', 3, 5, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
-    ( 26, 26, 20, 2, 'post','/menus', 1, NULL, '{"zh_CN": "创建"}', 'system:menus@create', '0.2.20', 3, 6, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09');
+    ( 26, 26, 20, 2, 'post','/menus', 1, NULL, '{"zh_CN": "创建"}', 'system:menus@create', '0.2.20', 3, 6, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
+    ( 27, 27, 20, 2, 'get','/menus/form', 1, NULL, '{"zh_CN": "菜单添加页面"}', 'system:menus@to-create', '0.2.20', 3, 7, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09'),
+    ( 28, 28, 20, 2, 'get','/menus/form/{id:\d+}', 1, NULL, '{"zh_CN": "菜单编辑页面"}', 'system:menus@to-update', '0.2.20', 3, 8, NULL, 'f', 'f','2024-03-28 12:27:04+09', '2024-03-28 12:27:04+09');
 
 
 DROP TABLE IF EXISTS "public"."mast_role";
@@ -206,6 +208,8 @@ INSERT INTO "public"."mast_role_mapping_permission" VALUES
 ('ROLE_ADMIN', 'system:menus@delete'),
 ('ROLE_ADMIN', 'system:menus@suspension'),
 ('ROLE_ADMIN', 'system:menus@create'),
+('ROLE_ADMIN', 'system:menus@to-create'),
+('ROLE_ADMIN', 'system:menus@to-update'),
 
 ('ROLE_MANAGER', 'dashboard'),
 ('ROLE_MANAGER', 'system'),
@@ -233,6 +237,8 @@ INSERT INTO "public"."mast_role_mapping_permission" VALUES
 ('ROLE_MANAGER', 'system:menus@delete'),
 ('ROLE_MANAGER', 'system:menus@suspension'),
 ('ROLE_MANAGER', 'system:menus@create'),
+('ROLE_MANAGER', 'system:menus@to-create'),
+('ROLE_MANAGER', 'system:menus@to-update'),
 
 ('ROLE_IMPORT_USER', 'dashboard'),
 ('ROLE_IMPORT_USER', 'system'),

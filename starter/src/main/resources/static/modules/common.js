@@ -26,7 +26,7 @@ $(function() {
                     $table.bootstrapTable("load", {rows: res.data.records, total: res.data.total});
 
                     // 2. `操作`权限判断, 增删改只要有一个就显示, 自已在html上定义此方法实现
-                    showOperation();
+                    showOperation($table);
 
                     // 3. 渲染为树状列表
                     $table.treegrid({
@@ -67,7 +67,7 @@ $(function() {
                     $table.bootstrapTable("load", res.data);
 
                     // 2. `操作`权限判断, 增删改只要有一个就显示, 自已在html上定义此方法实现
-                    showOperation();
+                    showOperation($table);
 
                     // 3. 渲染为树状列表
                     $table.treegrid({
@@ -85,19 +85,22 @@ $(function() {
         // 列表中的 `操作` 列
         operationFormatter: function(value, row, index) {
             // 拼接操作项
-            var operationHtml = [];
+            const operationHtml = [];
             operationHtml.push(
-                '<div class="btn-group">' +
+                '<div class="btn-group btn-group-'+index+'">' +
                 '   <button type="button" class="btn btn-primary dropdown-toggle dropdown-hover dropdown-icon btn-xs" data-toggle="dropdown" >' +
                 '    <i class="fa fa-cog"></i>' +
                 '   </button>' +
                 '<ul class="dropdown-menu dropdown-menu-right" role="menu">');
 
-            getOperationHtml(operationHtml, row);
+            const showBtnGroupOperation = getOperationHtml(operationHtml, row);
 
             operationHtml.push( '</ul></div>');
             // 数组元素以空字符拼接成字符串返回
-            return operationHtml.join('');
+            if (showBtnGroupOperation) {
+                return operationHtml.join('');
+            }
+            return '-'
         },
 
         delete: function (url) {

@@ -54,10 +54,21 @@ const opts = {
             }
         },
         {
+            title: '是否可删除',
+            field: 'mmEnableDelete',
+            visible: false
+        },
+        {
+            title: '是否可修改',
+            field: 'mmEnableEdit',
+            visible: false
+        },
+        {
             title: '操作',
             field: 'action',
             visible: false,
-            width: 100
+            width: 100,
+            formatter:  (val,row,index) => $.operationFormatter(val,row,index)
         }
     ]
 }

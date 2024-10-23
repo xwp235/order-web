@@ -25,7 +25,16 @@ public class VotingAuthorizationManager implements AuthorizationManager<HttpServ
         var requiredAttributes = permissionMetadataSource.getAttributes(request);
         // 如果访问的url没有授权的需求则直接跳过
         if (CollectionUtils.isEmpty(requiredAttributes)) {
-            return new AuthorizationDecision(true);
+            return new AuthorizationDecision(false);
+        }
+        return votingStrategy.vote(authentication.get(), requiredAttributes);
+    }
+
+    public AuthorizationDecision check(Supplier<Authentication> authentication, String requestURI,String method) {
+        var requiredAttributes = permissionMetadataSource.getRequiredAttributes(requestURI,method,false);
+        // 如果访问的url没有授权的需求则直接跳过
+        if (CollectionUtils.isEmpty(requiredAttributes)) {
+            return new AuthorizationDecision(false);
         }
         return votingStrategy.vote(authentication.get(), requiredAttributes);
     }

@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-  <th:block th:replace="fragments/head :: public-css"/>
-  <th:block th:replace="fragments/head :: ztree-css"/>
+  <th:block th:replace="~{fragments/head :: public-css}"/>
+  <th:block th:replace="~{fragments/head :: ztree-css}"/>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
@@ -11,11 +11,11 @@
 <div class="wrapper">
 
   <!-- 头部区域 Navbar -->
-  <th:block th:replace="fragments/main-header"/>
+  <th:block th:replace="~{fragments/main-header}"/>
   <!-- /.navbar -->
 
   <!-- 左侧区域 Main Sidebar Container -->
-  <th:block th:replace="fragments/main-sidebar(activeUrl= '/permission')"/>
+  <th:block th:replace="~{fragments/main-sidebar :: aside('/menu-manage')}"/>
 
   <!-- 右侧主区域 Content Wrapper. Contains page content -->
   <div class="content-wrapper  text-sm">
@@ -157,7 +157,7 @@
                     <button type="submit" class="btn btn-primary">
                       <i class="fa fa-check"></i>&nbsp;提交
                     </button>
-                    <button type="button" th:onclick="location.href=[[@{/permission}]]" class="btn btn-default">
+                    <button type="button" th:onclick="location.href=[[@{/menu-manage}]]" class="btn btn-default">
                       <i class="fa fa-reply-all"></i>&nbsp;返回
                     </button>
                   </div>
@@ -172,17 +172,21 @@
   </div>
 
   <!--右底部区域-->
-  <th:block th:replace="fragments/main-footer"/>
+  <th:block th:replace="~{fragments/main-footer}"/>
 
   <!-- 右上角工具栏 Control Sidebar -->
-  <th:block th:replace="fragments/control-sidebar"/>
+  <th:block th:replace="~{fragments/control-sidebar}"/>
 </div>
 <!-- ./wrapper -->
 
-<th:block th:replace="fragments/script :: public-js"/>
-<th:block th:replace="fragments/script :: inputmask-js"/>
-<th:block th:replace="fragments/script :: ztree-js"/>
-<th:block th:replace="fragments/script :: layer-js"/>
+<th:block th:replace="~{fragments/script :: public-js}"/>
+<th:block th:replace="~{fragments/script :: inputmask-js}"/>
+<th:block th:replace="~{fragments/script :: ztree-js}"/>
+<th:block th:replace="~{fragments/script :: layer-js}"/>
+
+<script th:src="@{/modules/permission/permission-form.js}"></script>
+<script th:inline="javascript">
+</script>
 
 </body>
 </html>

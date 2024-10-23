@@ -1,7 +1,7 @@
-package com.xweb.starter.modules.menus.controller;
+package com.xweb.starter.modules.menumanage.controller;
 
 import com.xweb.starter.common.resp.JsonResp;
-import com.xweb.starter.modules.menus.service.MenuService;
+import com.xweb.starter.modules.menumanage.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

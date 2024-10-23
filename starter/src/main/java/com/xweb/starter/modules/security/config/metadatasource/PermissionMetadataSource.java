@@ -45,9 +45,14 @@ public class PermissionMetadataSource implements FilterInvocationSecurityMetadat
      */
     public Collection<ConfigAttribute> getRequiredAttributes(String requestURI, String requestMethod, boolean fromRequest) {
         // 从权限服务中加载 URL 对应的权限
-        PathPattern pattern;
         String dbRequestURI;
+        PathPattern pattern;
         var matchedRequestURI = "";
+
+        if (StringUtils.isBlank(requestURI)) {
+            return null;
+        }
+
         for (var urlKey : permissionMap.keySet()) {
 
             var urlKeyArr = StringUtils.split(urlKey, Constants.AUTHORIZE_PERMISSION_METADATA_SOURCE_PERMISSION_KEY_DELIMITER);
@@ -55,13 +60,14 @@ public class PermissionMetadataSource implements FilterInvocationSecurityMetadat
 
             boolean matched;
             if (fromRequest) {
-                pattern = parser.parse(urlKeyArr[1]);
-                matched = StringUtils.equalsIgnoreCase(mapRequestMethod, requestMethod) &&
-                        pattern.matches(PathContainer.parsePath(requestURI));
+                pattern = parser.parse(urlKeyArr[1].trim());
+                var pathMatched = pattern.matches(PathContainer.parsePath(requestURI.trim()));
+                var methodMatched = StringUtils.equalsIgnoreCase(mapRequestMethod, requestMethod);
+                matched = methodMatched && pathMatched;
             } else {
-                dbRequestURI = urlKeyArr[1];
+                dbRequestURI = urlKeyArr[1].trim();
                 matched = StringUtils.equalsIgnoreCase(mapRequestMethod, requestMethod) &&
-                        StringUtils.equals(dbRequestURI,requestURI);
+                        StringUtils.equals(dbRequestURI,requestURI.trim());
             }
             if (matched) {
                 matchedRequestURI = urlKey;

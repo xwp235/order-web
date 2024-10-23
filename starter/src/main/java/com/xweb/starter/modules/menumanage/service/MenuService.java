@@ -1,10 +1,13 @@
-package com.xweb.starter.modules.menus.service;
+package com.xweb.starter.modules.menumanage.service;
 
-import com.xweb.starter.modules.menus.resp.MenuListResp;
+import com.xweb.starter.modules.menumanage.resp.MenuListResp;
+import com.xweb.starter.modules.security.domain.entity.MastMenu;
+import com.xweb.starter.modules.security.domain.entity.MastMenuExample;
 import com.xweb.starter.modules.security.mapper.MastMenuMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +28,16 @@ public class MenuService {
             result.add(item);
         });
         return result;
+    }
+
+    public MastMenu getById(Integer id) {
+        var example = new MastMenuExample();
+        example.createCriteria().andMmIdEqualTo(id);
+        var menuList = menuMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(menuList)){
+            return null;
+        }
+        return menuList.get(0);
     }
 
 }

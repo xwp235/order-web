@@ -9,7 +9,6 @@ import com.xweb.starter.modules.security.config.authorization.CompositeAuthoriza
 import com.xweb.starter.modules.security.config.filter.CheckImageCodeFilter;
 import com.xweb.starter.modules.security.config.filter.CheckLoginStateFilter;
 import com.xweb.starter.modules.security.config.handler.WebLogoutSuccessHandler;
-import com.xweb.starter.modules.security.config.metadatasource.PermissionMetadataSource;
 import com.xweb.starter.modules.security.config.properties.SecurityProperties;
 import com.xweb.starter.modules.security.config.strategy.SimpleCompositeInvalidSessionStrategy;
 import com.xweb.starter.modules.security.config.strategy.SimpleCompositeSessionInformationExpiredStrategy;
@@ -29,6 +28,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.PermissionEvaluator;
+import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyAuthoritiesMapper;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
@@ -44,6 +45,7 @@ import org.springframework.security.config.annotation.web.configurers.AnonymousC
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionRegistry;
@@ -65,6 +67,7 @@ import org.springframework.security.web.session.DisableEncodeUrlFilter;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import javax.sql.DataSource;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -86,17 +89,17 @@ public class SecurityConfig {
             AuthenticationManager authenticationManager,
             SecurityContextRepository securityContextRepository,
             ApplicationContext applicationContext,
-            PermissionMetadataSource metadataSource,
             RequestLogRecordFilter requestLogRecordFilter,
             CheckLoginStateFilter checkLoginStateFilter,
             CheckImageCodeFilter checkImageCodeFilter,
             ObjectMapper objectMapper,
             HisClientLoginLogDao clientLoginLogDao,
             MenuDao menuDao,
-            PersistentTokenRepository persistentTokenRepository
+            PersistentTokenRepository persistentTokenRepository,
+            CompositeAuthorizationManager compositeAuthorizationManager
     ) throws Exception {
 
-        var authorizationFilter = new AuthorizationFilter(new CompositeAuthorizationManager(metadataSource));
+        var authorizationFilter = new AuthorizationFilter(compositeAuthorizationManager);
         authorizationFilter.setAuthorizationEventPublisher(new SpringAuthorizationEventPublisher(applicationContext));
         authorizationFilter.setSecurityContextHolderStrategy(SecurityContextHolder.getContextHolderStrategy());
         var needAuthenticationPaths = menuDao.needAuthenticationUrlPath();
@@ -299,6 +302,35 @@ public class SecurityConfig {
         var registration = new FilterRegistrationBean<>(filter);
         registration.setEnabled(false);
         return registration;
+    }
+
+    @Bean
+    DefaultMethodSecurityExpressionHandler methodSecurityExpressionHandler() {
+        var expressionHandler = new DefaultMethodSecurityExpressionHandler();
+        expressionHandler.setPermissionEvaluator(new PermissionEvaluator() {
+            @Override
+            public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
+                if (authentication == null || permission == null) {
+                    return false;
+                }
+
+                String permissionToCheck = permission.toString();
+
+                // 遍历用户的权限，进行部分匹配检查
+                return authentication.getAuthorities().stream()
+                        .anyMatch(grantedAuthority -> {
+                            String authority = grantedAuthority.getAuthority();
+                            // 权限字符串部分匹配
+                            return authority.contains(permissionToCheck);
+                        });
+            }
+
+            @Override
+            public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
+                return false;
+            }
+        });
+        return expressionHandler;
     }
 
     private void setResponseDetails(HttpServletResponse resp) {
