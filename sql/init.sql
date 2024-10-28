@@ -32,7 +32,7 @@ COMMENT ON COLUMN "public"."mast_menu"."mm_id" IS '菜单ID';
 
 COMMENT ON COLUMN "public"."mast_menu"."mm_parent_id" IS '父菜单ID，顶级菜单值为NULL';
 
-COMMENT ON COLUMN "public"."mast_menu"."mm_type" IS '菜单类型，菜单=1 按钮=2 页面=3 链接=4';
+COMMENT ON COLUMN "public"."mast_menu"."mm_type" IS '菜单类型，菜单=1 按钮=2 链接=3';
 
 COMMENT ON COLUMN "public"."mast_menu"."mm_path" IS '菜单类型为菜单或页面时才需要设置';
 

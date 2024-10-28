@@ -28,8 +28,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.PermissionEvaluator;
-import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyAuthoritiesMapper;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
@@ -39,13 +37,14 @@ import org.springframework.security.authentication.DefaultAuthenticationEventPub
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.authorization.SpringAuthorizationEventPublisher;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AnonymousConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionRegistry;
@@ -60,14 +59,14 @@ import org.springframework.security.web.authentication.logout.HeaderWriterLogout
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.authentication.session.ChangeSessionIdAuthenticationStrategy;
-import org.springframework.security.web.context.*;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextHolderFilter;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
-import org.springframework.security.web.savedrequest.NullRequestCache;
 import org.springframework.security.web.session.DisableEncodeUrlFilter;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import javax.sql.DataSource;
-import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -75,7 +74,7 @@ import java.util.Objects;
  */
 @Configuration
 @EnableConfigurationProperties(SecurityProperties.class)
-@EnableWebSecurity(debug = false)
+@EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -107,13 +106,16 @@ public class SecurityConfig {
         http
             // 禁止匿名用户登录
             .anonymous(AnonymousConfigurer::disable)
-            // 默认的请求缓存机制 防止未经授权的用户被重定向到原始请求URL，而是在登录或认证后直接跳转到默认页面。
-            .requestCache(cache-> cache.requestCache(new NullRequestCache()))
             .securityContext((securityContext) -> securityContext
                     // 指定了 SecurityContext 的存储库
                     .securityContextRepository(securityContextRepository)
                     // 设置 requireExplicitSave(true) 后，SecurityContext 的更改不会自动保存到 SecurityContextRepository 中，只有显式调用保存方法时才会生效
                     .requireExplicitSave(true)
+            )
+            .requestCache(Customizer.withDefaults())
+            .cors(Customizer.withDefaults())
+            .headers(headers ->
+                headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)
             )
             // http-basic配置,配置为不开启
             .httpBasic(HttpBasicConfigurer::disable)
@@ -144,12 +146,11 @@ public class SecurityConfig {
                    new ChangeSessionIdAuthenticationStrategy()
                 )
                 // 自定义session无效后的处理策略(ajax访问返回json)
-                .invalidSessionStrategy(compositeInvalidSessionStrategy);
+                .invalidSessionStrategy(compositeInvalidSessionStrategy)
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
                 if (Objects.nonNull(maximumSession)) {
                     var compositeSessionExpiredStrategy = new SimpleCompositeSessionInformationExpiredStrategy(securityProperties.getExpiredSessionUrl());
-                    session
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                        .maximumSessions(maximumSession)
+                    session.maximumSessions(maximumSession)
                         .maxSessionsPreventsLogin(securityProperties.getMaxSessionsPreventsLogin())
                             // 自定义并发控制加载时session过期后的处理策略(ajax访问返回json)
                             .expiredSessionStrategy(compositeSessionExpiredStrategy);
@@ -204,10 +205,7 @@ public class SecurityConfig {
 
     @Bean
     SecurityContextRepository securityContextRepository() {
-        return new DelegatingSecurityContextRepository(
-                new RequestAttributeSecurityContextRepository(),
-                new HttpSessionSecurityContextRepository()
-        );
+        return new HttpSessionSecurityContextRepository();
     }
 
     @Bean
@@ -302,35 +300,6 @@ public class SecurityConfig {
         var registration = new FilterRegistrationBean<>(filter);
         registration.setEnabled(false);
         return registration;
-    }
-
-    @Bean
-    DefaultMethodSecurityExpressionHandler methodSecurityExpressionHandler() {
-        var expressionHandler = new DefaultMethodSecurityExpressionHandler();
-        expressionHandler.setPermissionEvaluator(new PermissionEvaluator() {
-            @Override
-            public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
-                if (authentication == null || permission == null) {
-                    return false;
-                }
-
-                String permissionToCheck = permission.toString();
-
-                // 遍历用户的权限，进行部分匹配检查
-                return authentication.getAuthorities().stream()
-                        .anyMatch(grantedAuthority -> {
-                            String authority = grantedAuthority.getAuthority();
-                            // 权限字符串部分匹配
-                            return authority.contains(permissionToCheck);
-                        });
-            }
-
-            @Override
-            public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
-                return false;
-            }
-        });
-        return expressionHandler;
     }
 
     private void setResponseDetails(HttpServletResponse resp) {

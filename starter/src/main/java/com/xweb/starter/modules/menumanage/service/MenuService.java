@@ -40,4 +40,8 @@ public class MenuService {
         return menuList.get(0);
     }
 
+    public void saveOrUpdate(MastMenu menu) {
+
+    }
+
 }

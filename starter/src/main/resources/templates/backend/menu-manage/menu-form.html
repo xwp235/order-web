@@ -1,3 +1,4 @@
+<!--suppress ALL-->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
@@ -69,17 +70,17 @@
                   <h3 class="card-title">基本信息</h3>
                 </div>
                 <!-- /.card-header -->
-                <form id="form" th:action="@{/permission}" th:method="post" >
-                  <input name="_method" value="put" type="hidden" >
-                  <input id="id" name="id" type="hidden" >
+                <form id="form" th:action="@{/menus}" th:method="post" th:object="${menu}">
+                  <input name="_method" th:if="*{id != null}" value="put" type="hidden">
+                  <input id="id" name="id" type="hidden" th:value="*{id}">
                   <div class="card-body ml-4">
                     <div class="row ">
                       <div class="col-sm-6">
                         <div class="form-group row">
                           <label class="col-sm-3  col-form-label"><span style="color: red;">*</span>上级资源：</label>
                           <div>
-                            <input id="parentId" name="parentId" type="hidden">
-                            <input id="parentName" name="parentName" type="text" placeholder="请在右侧选择上级" class="form-control" readonly  >
+                            <input id="parentId" name="mmParentId" type="hidden" th:value="*{mmParentId}">
+                            <input id="parentName" name="parentName" type="text" placeholder="请在右侧选择上级" class="form-control" readonly>
                           </div>
                         </div>
                       </div>
@@ -87,7 +88,7 @@
                         <div class="form-group row">
                           <label class="col-sm-3  col-form-label"><span style="color: red;">*</span>资源名称：</label>
                           <div>
-                            <input name="name" type="text"  maxlength="40" class="form-control" placeholder="请输入资源名称" required>
+                            <input th:value="*{mmName!=null ? mmName.zh_CN : ''}" name="mmName" type="text"  maxlength="40" class="form-control" placeholder="请输入资源名称" required>
                           </div>
                         </div>
                       </div>
@@ -96,18 +97,43 @@
                     <div class="row ">
                       <div class="col-sm-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">权限标识：</label>
-                          <div>
-                            <input  type="text" name="code" maxlength="40" class="form-control" placeholder="请输入权限标识" >
+                          <label class="col-sm-3 col-form-label">资源状态：</label>
+                          <div class="col-sm-9 form-inline">
+                            <div class="form-check">
+                              <input th:field="*{mmState}" value="1" name="type" type="radio" class="form-check-input " id="state1">
+                              <label class="form-check-label">激活</label>
+                            </div>
+                            <div class="form-check">
+                              <input th:field="*{mmState}" value="0" name="type" type="radio" class="form-check-input " id="state0">
+                              <label class="form-check-label">禁用</label>
+                            </div>
                           </div>
                         </div>
                       </div>
+                      <div class="col-sm-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">权限标识：</label>
+                          <div>
+                            <input th:value="*{mmCode}" type="text" name="mmCode" maxlength="40" class="form-control" placeholder="请输入权限标识" >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">请求方式：</label>
+                          <div>
+                            <input th:value="*{mmMethod}" type="text" name="mmMethod" maxlength="40" class="form-control" placeholder="请输入请求地址" >
+                          </div>
+                        </div>
+                      </div>
                       <div class="col-sm-6">
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">请求地址：</label>
                           <div>
-                            <input  type="text" name="url" maxlength="40" class="form-control" placeholder="请输入请求地址" >
+                            <input th:value="*{mmPath}" type="text" name="mmPath" maxlength="40" class="form-control" placeholder="请输入请求地址" >
                           </div>
                         </div>
                       </div>
@@ -119,12 +145,16 @@
                           <label class="col-sm-3 col-form-label">资源类型：</label>
                           <div class="col-sm-9 form-inline">
                             <div class="form-check">
-                              <input value="1"  name="type" type="radio" class="form-check-input " id="type1" checked>
-                              <label class="form-check-label ">菜单&nbsp;</label>
+                              <input th:field="*{mmType}" value="1" name="type" type="radio" class="form-check-input " id="type1">
+                              <label class="form-check-label">菜单</label>
                             </div>
                             <div class="form-check">
-                              <input value="2" name="type" type="radio" class="form-check-input " id="type2" checked>
-                              <label class="form-check-label ">按钮&nbsp;</label>
+                              <input th:field="*{mmType}" value="2" name="type" type="radio" class="form-check-input " id="type2">
+                              <label class="form-check-label">按钮</label>
+                            </div>
+                            <div class="form-check">
+                              <input th:field="*{mmType}" value="3" name="type" type="radio" class="form-check-input " id="type3">
+                              <label class="form-check-label">链接</label>
                             </div>
                           </div>
                         </div>
@@ -133,7 +163,7 @@
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">资源图标：</label>
                           <div>
-                            <input type="text" name="icon" maxlength="40" class="form-control" placeholder="请输入资源图标" >
+                            <input type="text" name="mmIcon" th:value="*{mmIcon}" maxlength="40" class="form-control" placeholder="请输入资源图标" >
                           </div>
                         </div>
                       </div>
@@ -145,7 +175,7 @@
                         <div class="form-group row">
                           <label class="col-sm-4 col-form-label">描述信息：</label>
                           <div class="col-10">
-                            <textarea id="remark" name="remark" maxlength="200" class="form-control " rows="3">[[*{remark}]]</textarea>
+                            <textarea id="remark" name="remark" maxlength="200" class="form-control " rows="3">[[*{mmRemark}]]</textarea>
                           </div>
                         </div>
                       </div>
@@ -185,8 +215,5 @@
 <th:block th:replace="~{fragments/script :: layer-js}"/>
 
 <script th:src="@{/modules/permission/permission-form.js}"></script>
-<script th:inline="javascript">
-</script>
-
 </body>
 </html>

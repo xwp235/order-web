@@ -6,6 +6,7 @@ server:
       cookie:
         # 必须配置，防止使用spring-session做session管理时导致相互间session不一致
         name: ORDER-WEB-SESSION-ID
+        same-site: lax
   port: 8080
 
 spring:
@@ -40,6 +41,10 @@ spring:
         await-termination-period: PT3M
   mvc:
     log-request-details: on
+    # spring-boot 2.2版本后要手动开启form的_method对delete和put的处理
+    hiddenmethod:
+      filter:
+        enabled: on
   profiles:
     active: dev
   quartz:
@@ -133,7 +138,7 @@ security:
     - /adminlte/**
     - /plugins/**
     - /img/**
-    - /api/login
+    - /api/**
     - ${security.invalid-session-url}
     - ${security.expired-session-url}
     - ${security.access-denied-url}

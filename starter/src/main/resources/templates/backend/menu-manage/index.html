@@ -45,7 +45,7 @@
           <h3 class="card-title">菜单列表</h3>
           <!-- 工具栏 -->
           <div th:if="${#lists.contains(session.permissions?.buttonList, 'system:menus@create')}" class="card-tools">
-            <button type="button" class="btn btn-primary btn-xs" th:onclick="location.href=[[@{/menu/form}]]" data-toggle="tooltip" title="新增">
+            <button type="button" class="btn btn-primary btn-xs" th:onclick="location.href=[[@{/menus/form}]]" data-toggle="tooltip" title="新增">
               <i class="fa fa-plus"></i>&nbsp;新增
             </button>
           </div>
@@ -119,7 +119,7 @@
         if (allowDelete) {
           operationHtml.push(`
            <li>
-             <a class="dropdown-item btn btn-primary">
+             <a onclick="$.delete(${contextPath}menus?id=${row.mmId})" class="dropdown-item btn btn-primary">
                  <i class="fa fa-trash"></i>&nbsp;删除
              </a>
            </li>

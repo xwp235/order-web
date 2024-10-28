@@ -16,13 +16,13 @@
 
     <properties>
         <revision>1.0.0</revision>
-        <spring-boot.version>3.3.4</spring-boot.version>
-        <dotenv-java.version>3.0.1</dotenv-java.version>
+        <spring-boot.version>3.3.5</spring-boot.version>
+        <dotenv-java.version>3.0.2</dotenv-java.version>
         <mybatis-spring-boot.version>3.0.3</mybatis-spring-boot.version>
         <juniversalchardet.version>2.5.0</juniversalchardet.version>
         <bucket4j.version>8.14.0</bucket4j.version>
         <p6spy-spring-boot-starter.version>1.9.2</p6spy-spring-boot-starter.version>
-        <flowlong.version>1.0.3</flowlong.version>
+        <flowlong.version>1.0.4</flowlong.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <commons-io.version>2.17.0</commons-io.version>
         <uap-java.version>1.6.1</uap-java.version>
@@ -47,19 +47,21 @@
                 <scope>import</scope>
             </dependency>
 
+            <!-- https://github.com/cdimascio/dotenv-java-->
             <dependency>
                 <groupId>io.github.cdimascio</groupId>
                 <artifactId>dotenv-java</artifactId>
                 <version>${dotenv-java.version}</version>
             </dependency>
 
-            <!--检测文件编码工具库-->
+            <!--检测文件编码工具库 https://github.com/albfernandez/juniversalchardet-->
             <dependency>
                 <groupId>com.github.albfernandez</groupId>
                 <artifactId>juniversalchardet</artifactId>
                 <version>${juniversalchardet.version}</version>
             </dependency>
 
+            <!--https://github.com/bucket4j/bucket4j-->
             <dependency>
                 <groupId>com.bucket4j</groupId>
                 <artifactId>bucket4j_jdk17-core</artifactId>
@@ -87,6 +89,7 @@
                 <artifactId>commons-collections4</artifactId>
                 <version>${commons-collections4.version}</version>
             </dependency>
+            <!-- https://github.com/apache/commons-io-->
             <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
