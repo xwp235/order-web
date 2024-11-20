@@ -161,3 +161,10 @@ security:
     cookie-name: remember-me
     # 一周内有效
     token-validity-seconds: 604800
+
+#decorator:
+#  datasource:
+#    datasource-proxy:
+#      slow-query:
+#        threshold: 2000
+#      format-sql: off

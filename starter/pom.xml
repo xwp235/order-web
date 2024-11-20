@@ -104,6 +104,11 @@
             <artifactId>juniversalchardet</artifactId>
         </dependency>
 
+<!--        <dependency>-->
+<!--            <groupId>com.github.gavlyukovskiy</groupId>-->
+<!--            <artifactId>p6spy-spring-boot-starter</artifactId>-->
+<!--        </dependency>-->
+
         <dependency>
             <groupId>com.bucket4j</groupId>
             <artifactId>bucket4j_jdk17-core</artifactId>
@@ -142,6 +147,11 @@
         <dependency>
             <groupId>com.github.penggle</groupId>
             <artifactId>kaptcha</artifactId>
+        </dependency>
+        <!-- https://github.com/BastiaanJansen/otp-java-->
+        <dependency>
+            <groupId>com.github.bastiaanjansen</groupId>
+            <artifactId>otp-java</artifactId>
         </dependency>
 
         <dependency>
