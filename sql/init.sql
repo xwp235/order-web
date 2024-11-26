@@ -152,7 +152,8 @@ INSERT INTO "public"."mast_account" ("id","username","password") VALUES
 (7, 'user3','{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW'),
 (8, 'user4','{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW'),
 (9, 'import1','{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW'),
-(10, 'import2','{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW');
+(10, 'import2','{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW'),
+(11, 'mfa1','{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW');
 
 
 DROP TABLE IF EXISTS "public"."mast_account_mapping_role";
@@ -172,7 +173,8 @@ INSERT INTO "public"."mast_account_mapping_role" VALUES
 (7,'ROLE_USER'),
 (8,'ROLE_USER'),
 (9,'ROLE_IMPORT_USER'),
-(10,'ROLE_IMPORT_USER');
+(10,'ROLE_IMPORT_USER'),
+(11,'ROLE_IMPORT_USER');
 
 DROP TABLE IF EXISTS "public"."mast_role_mapping_permission";
 CREATE TABLE "public"."mast_role_mapping_permission" (

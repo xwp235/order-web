@@ -55,6 +55,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedHeaders(CorsConfiguration.ALL)
                 // 允许所有请求方式(GET,POST,...)
                 .allowedMethods(CorsConfiguration.ALL)
+                .exposedHeaders("X-Authenticate")
                 // 允许请求带上cookie
                 .allowCredentials(true)
                 // 一小时内不再需要预检（发送OPTIONS请求）
@@ -74,6 +75,7 @@ public class WebConfig implements WebMvcConfigurer {
         configuration.setAllowCredentials(true);
         // 一小时内不再需要预检（发送OPTIONS请求）
         configuration.setMaxAge(3600L);
+        configuration.addExposedHeader("X-Authenticate");
         // 配置路径匹配策略
         var source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**",configuration);
