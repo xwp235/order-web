@@ -134,9 +134,10 @@ public class SecurityConfig {
             .addFilterAfter(
                     checkLoginStateFilter,
                     SecurityContextHolderFilter.class
-            )
+            );
+
             // 配置自定义授权过滤器
-            .addFilterAt(authorizationFilter, AuthorizationFilter.class);
+            http.addFilterAt(authorizationFilter, AuthorizationFilter.class);
 
              var maximumSession = securityProperties.getMaximumSessions();
              var compositeInvalidSessionStrategy = new SimpleCompositeInvalidSessionStrategy(securityProperties.getInvalidSessionUrl(),cookieName);
@@ -200,6 +201,7 @@ public class SecurityConfig {
                         .addLogoutHandler(new HeaderWriterLogoutHandler(new ClearSiteDataHeaderWriter(ClearSiteDataHeaderWriter.Directive.COOKIES)))
                         .logoutSuccessHandler(new WebLogoutSuccessHandler(clientLoginLogDao))
             );
+
         return http.build();
     }
 

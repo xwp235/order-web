@@ -130,7 +130,7 @@ CREATE TABLE "public"."mast_account" (
     account_locked  bool NOT NULL default false,
     password_expired bool NOT NULL default false,
     mfa_key varchar(255),
-    using_mfa bool NOT NULL default true,
+    using_mfa bool NOT NULL default false,
     enabled boolean NOT NULL default true,
     create_time timestamptz(6) NOT NULL default current_timestamp(6),
     update_time timestamptz(6) NOT NULL default current_timestamp(6),
@@ -142,18 +142,18 @@ CREATE TABLE "public"."mast_account" (
     CHECK (COALESCE(username,mobile,email) IS NOT NULL)
 );
 
-INSERT INTO "public"."mast_account" ("id","username","password") VALUES
-(1, 'admin', '{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW'),
-(2, 'manager1','{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW'),
-(3, 'manager2','{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW'),
-(4, 'manager3','{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW'),
-(5, 'user1','{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW'),
-(6, 'user2','{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW'),
-(7, 'user3','{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW'),
-(8, 'user4','{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW'),
-(9, 'import1','{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW'),
-(10, 'import2','{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW'),
-(11, 'mfa1','{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW');
+INSERT INTO "public"."mast_account" ("id","username","password","using_mfa","mfa_key") VALUES
+(1, 'admin', '{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW',false,null),
+(2, 'manager1','{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW',false,null),
+(3, 'manager2','{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW',false,null),
+(4, 'manager3','{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW',false,null),
+(5, 'user1','{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW',false,null),
+(6, 'user2','{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW',false,null),
+(7, 'user3','{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW',false,null),
+(8, 'user4','{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW',false,null),
+(9, 'import1','{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW',false,null),
+(10, 'import2','{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW',false,null),
+(11, 'mfa1','{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW',true,'HYo/C8Cwtw8y1dSA2EoFiQ==');
 
 
 DROP TABLE IF EXISTS "public"."mast_account_mapping_role";

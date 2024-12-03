@@ -3,15 +3,19 @@ package com.xweb.starter.modules.security.config.apply;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xweb.starter.modules.security.config.details.LoginExtraDetails;
 import com.xweb.starter.modules.security.config.filter.ApiAuthenticationFilter;
+import com.xweb.starter.modules.security.config.filter.WebAuthenticationFilter;
+import com.xweb.starter.modules.security.config.properties.FormLoginProperties;
 import com.xweb.starter.modules.security.config.properties.SecurityProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.SecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * form表单登录配置
@@ -28,12 +32,13 @@ public class ApplySecurityConfig implements SecurityConfigurer<DefaultSecurityFi
         var formLogin = securityProperties.getFormLogin();
         var securityContextRepository = http.getSharedObject(SecurityContextRepository.class);
         var sessionAuthenticationStrategy = http.getSharedObject(SessionAuthenticationStrategy.class);
-
         var apiAuthenticationFilter = new ApiAuthenticationFilter(
                 securityProperties, objectMapper,
                 authenticationManager,securityContextRepository,
                 sessionAuthenticationStrategy
         );
+
+        var webAuthenticationFilter = getWebAuthenticationFilter(formLogin, sessionAuthenticationStrategy, securityContextRepository);
 
         http
             // form表单登录配置
@@ -50,8 +55,25 @@ public class ApplySecurityConfig implements SecurityConfigurer<DefaultSecurityFi
                    .defaultSuccessUrl(formLogin.getDefaultSuccessUrl())
                    .authenticationDetailsSource(LoginExtraDetails::new)
             )
-            // rest api登录配置
-            .addFilterAt(apiAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                // 用户名密码登录配置
+            .addFilterAt(webAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                // rest api登录配置
+                .addFilterAt(apiAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+    }
+
+    private WebAuthenticationFilter getWebAuthenticationFilter(FormLoginProperties formLogin, SessionAuthenticationStrategy sessionAuthenticationStrategy, SecurityContextRepository securityContextRepository) {
+        var webAuthenticationFilter = new WebAuthenticationFilter(authenticationManager);
+        webAuthenticationFilter.setUsernameParameter(formLogin.getUsernameParameter());
+        webAuthenticationFilter.setPasswordParameter(formLogin.getPasswordParameter());
+        webAuthenticationFilter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(formLogin.getLoginProcessingUrl(), "POST"));
+        // 配置自定义用户名密码登录认证过滤器
+        webAuthenticationFilter.setSessionAuthenticationStrategy(sessionAuthenticationStrategy);
+        webAuthenticationFilter.setSecurityContextRepository(securityContextRepository);
+        var handler = new SavedRequestAwareAuthenticationSuccessHandler();
+        handler.setDefaultTargetUrl(formLogin.getDefaultSuccessUrl());
+        handler.setAlwaysUseDefaultTargetUrl(false);
+        webAuthenticationFilter.setAuthenticationSuccessHandler(handler);
+        return webAuthenticationFilter;
     }
 
     @Override

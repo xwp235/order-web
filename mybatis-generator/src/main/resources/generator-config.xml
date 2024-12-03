@@ -52,13 +52,13 @@
                              targetPackage="com.xweb.starter.modules.security.mapper"
                              type="XMLMAPPER"/>
 
-        <table tableName="mast_menu" domainObjectName="MastMenu">
-            <columnOverride column="mm_name" javaType="com.xweb.starter.common.dbmappingtypes.MultiLanguage" typeHandler="com.xweb.starter.common.typehandler.MultiLanguageTypeHandler"/>
-        </table>
+<!--        <table tableName="mast_menu" domainObjectName="MastMenu">-->
+<!--            <columnOverride column="mm_name" javaType="com.xweb.starter.common.dbmappingtypes.MultiLanguage" typeHandler="com.xweb.starter.common.typehandler.MultiLanguageTypeHandler"/>-->
+<!--        </table>-->
 <!--        <table tableName="mast_role" domainObjectName="MastRole">-->
 <!--            <columnOverride column="mr_name" javaType="com.xweb.starter.common.dbmappingtypes.MultiLanguage" typeHandler="com.xweb.starter.common.typehandler.MultiLanguageTypeHandler"/>-->
 <!--        </table>-->
-<!--        <table tableName="mast_account" domainObjectName="MastAccount"/>-->
+        <table tableName="mast_account" domainObjectName="MastAccount"/>
 <!--            <table tableName="his_client_login_log" domainObjectName="HisClientLoginLog"/>-->
     </context>
 </generatorConfiguration>

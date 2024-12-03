@@ -2,6 +2,7 @@ package com.xweb.starter.modules.security.userdetailsservice;
 
 import com.xweb.starter.modules.security.dao.AccountDao;
 import com.xweb.starter.modules.security.domain.bo.SecureUser;
+import com.xweb.starter.utils.OtpUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.security.core.GrantedAuthority;
@@ -53,8 +54,8 @@ public class DaoUserDetailsServiceImpl implements UserDetailsService {
                 .setAccountExpired(dbAccount.getAccountExpired())
                 .setAccountLocked(dbAccount.getAccountLocked())
                 .setPasswordExpired(dbAccount.getPasswordExpired())
-                .setMfaKey(dbAccount.getMfaKey())
                 .setUsingMfa(dbAccount.getUsingMfa())
+                .setMfaKey(dbAccount.getMfaKey())
                 .setEnabled(dbAccount.getEnabled())
                 .setCreateTime(dbAccount.getCreateTime())
                 .setRoles(roleSet);

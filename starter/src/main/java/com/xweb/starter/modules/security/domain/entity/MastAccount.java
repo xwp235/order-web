@@ -3,7 +3,7 @@ package com.xweb.starter.modules.security.domain.entity;
 import java.time.ZonedDateTime;
 
 /**
-* Created by Mybatis Generator on 2024/10/05 09:56
+* Created by Mybatis Generator on 2024/12/03 15:21
 */
 public class MastAccount {
     /**

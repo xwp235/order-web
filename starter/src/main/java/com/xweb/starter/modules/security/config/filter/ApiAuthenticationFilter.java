@@ -5,8 +5,11 @@ import com.xweb.starter.common.resp.JsonResp;
 import com.xweb.starter.modules.security.config.details.LoginExtraDetails;
 import com.xweb.starter.modules.security.config.properties.ApiLoginProperties;
 import com.xweb.starter.modules.security.config.properties.SecurityProperties;
+import com.xweb.starter.modules.security.domain.bo.SecureUser;
 import com.xweb.starter.utils.JsonUtil;
 import com.xweb.starter.utils.MessageUtil;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
@@ -77,6 +80,17 @@ public class ApiAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             throw new AuthenticationServiceException("Authentication required username or password not found.");
         }
         return this.getAuthenticationManager().authenticate(authRequest);
+    }
+
+    @Override
+    public void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+        var secureUser = (SecureUser)authResult.getPrincipal();
+        if (!secureUser.getUsingMfa()) {
+            super.successfulAuthentication(request, response, chain, authResult);
+            return;
+        }
+
+        super.successfulAuthentication(request, response, chain, authResult);
     }
 
     private void setResponseDetails(HttpServletResponse resp) {
