@@ -15,6 +15,7 @@ import com.xweb.starter.modules.security.config.strategy.SimpleCompositeSessionI
 import com.xweb.starter.modules.security.dao.HisClientLoginLogDao;
 import com.xweb.starter.modules.security.dao.MenuDao;
 import com.xweb.starter.modules.security.dao.RoleDao;
+import com.xweb.starter.modules.security.service.UserCacheService;
 import com.xweb.starter.utils.JsonUtil;
 import com.xweb.starter.utils.RequestUtil;
 import jakarta.servlet.http.HttpServletResponse;
@@ -95,7 +96,8 @@ public class SecurityConfig {
             HisClientLoginLogDao clientLoginLogDao,
             MenuDao menuDao,
             PersistentTokenRepository persistentTokenRepository,
-            CompositeAuthorizationManager compositeAuthorizationManager
+            CompositeAuthorizationManager compositeAuthorizationManager,
+            UserCacheService userCacheService
     ) throws Exception {
 
         var authorizationFilter = new AuthorizationFilter(compositeAuthorizationManager);
@@ -160,7 +162,7 @@ public class SecurityConfig {
 
             // 自定义AuthenticationManager对象配置
             http.authenticationManager(authenticationManager)
-                    .apply(new ApplySecurityConfig(securityProperties, objectMapper,authenticationManager));
+                    .apply(new ApplySecurityConfig(securityProperties, objectMapper,authenticationManager,userCacheService));
 
             http.exceptionHandling(handling->
                 handling

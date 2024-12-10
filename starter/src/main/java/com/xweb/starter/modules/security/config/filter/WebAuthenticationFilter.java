@@ -34,7 +34,7 @@ public class WebAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             return;
         }
         // 缓存用户id
-        var mfaId = userCacheService.cacheUser(secureUser);
+        var mfaId = userCacheService.cacheUser(authResult);
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.addHeader("X-Authenticate","mfa");
         response.addHeader("X-Authenticate","realm="+mfaId);

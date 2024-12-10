@@ -88,12 +88,13 @@ public class ApiAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     public void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+        // 更新密码编码（DaoUserDetailsServiceImpl@updatePassword）
         var secureUser = (SecureUser)authResult.getPrincipal();
         if (!secureUser.getUsingMfa()) {
             super.successfulAuthentication(request, response, chain, authResult);
             return;
         }
-        var mfaId = userCacheService.cacheUser(secureUser);
+        var mfaId = userCacheService.cacheUser(authResult);
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.addHeader("X-Authenticate","mfa");
         response.addHeader("X-Authenticate","realm="+mfaId);

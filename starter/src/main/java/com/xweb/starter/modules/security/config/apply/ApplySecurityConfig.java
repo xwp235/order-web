@@ -65,7 +65,7 @@ public class ApplySecurityConfig implements SecurityConfigurer<DefaultSecurityFi
     }
 
     private WebAuthenticationFilter getWebAuthenticationFilter(FormLoginProperties formLogin, SessionAuthenticationStrategy sessionAuthenticationStrategy, SecurityContextRepository securityContextRepository) {
-        var webAuthenticationFilter = new WebAuthenticationFilter(authenticationManager);
+        var webAuthenticationFilter = new WebAuthenticationFilter(authenticationManager,userCacheService);
         webAuthenticationFilter.setUsernameParameter(formLogin.getUsernameParameter());
         webAuthenticationFilter.setPasswordParameter(formLogin.getPasswordParameter());
         webAuthenticationFilter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(formLogin.getLoginProcessingUrl(), "POST"));

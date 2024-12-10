@@ -2,7 +2,6 @@ package com.xweb.starter.modules.security.userdetailsservice;
 
 import com.xweb.starter.modules.security.dao.AccountDao;
 import com.xweb.starter.modules.security.domain.bo.SecureUser;
-import com.xweb.starter.utils.OtpUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,7 +17,9 @@ import java.util.stream.Collectors;
 
 @Service("daoUserDetailsService")
 @RequiredArgsConstructor
-public class DaoUserDetailsServiceImpl implements UserDetailsService {
+public class DaoUserDetailsServiceImpl implements UserDetailsService
+//        , UserDetailsPasswordService
+        {
 
     private final AccountDao accountDao;
     private final GrantedAuthoritiesMapper authoritiesMapper;
@@ -62,4 +63,8 @@ public class DaoUserDetailsServiceImpl implements UserDetailsService {
         return loginUser;
     }
 
+//    @Override
+//    public UserDetails updatePassword(UserDetails user, String newPassword) {
+//        return null;
+//    }
 }
