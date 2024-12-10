@@ -42,4 +42,6 @@ public interface Constants {
         String ERR_10004_MSG = MessageUtil.getMessage("error_request_too_many_in_short_period");
     }
 
+    String MFA_USER = "mfa-user";
+
 }

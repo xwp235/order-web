@@ -27,7 +27,7 @@ public class OtpUtil {
     private KeyGenerator keyGenerator;
 
     @PostConstruct
-    public void init() {
+    void init() {
         try {
             keyGenerator = KeyGenerator.getInstance(HMACAlgorithm.SHA512.getHMACName());
             // sha-1和sha-256需要64个字节(512位)的key
@@ -58,8 +58,8 @@ public class OtpUtil {
                 .build();
     }
 
-    public boolean verify(TOTPGenerator generator, String code) {
-        return generator.verify(code);
+    public boolean verify(String key, String code) {
+        return createTotp(key).verify(code);
     }
 
     public Key generateKey() {

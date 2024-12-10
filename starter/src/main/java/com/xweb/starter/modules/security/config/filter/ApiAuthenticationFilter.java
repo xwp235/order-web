@@ -6,6 +6,7 @@ import com.xweb.starter.modules.security.config.details.LoginExtraDetails;
 import com.xweb.starter.modules.security.config.properties.ApiLoginProperties;
 import com.xweb.starter.modules.security.config.properties.SecurityProperties;
 import com.xweb.starter.modules.security.domain.bo.SecureUser;
+import com.xweb.starter.modules.security.service.UserCacheService;
 import com.xweb.starter.utils.JsonUtil;
 import com.xweb.starter.utils.MessageUtil;
 import jakarta.servlet.FilterChain;
@@ -29,18 +30,21 @@ public class ApiAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private final ApiLoginProperties apiLoginProperties;
     private final ObjectMapper objectMapper;
+    private final UserCacheService userCacheService;
 
     public ApiAuthenticationFilter(SecurityProperties securityProperties,
                                    ObjectMapper objectMapper,
                                    AuthenticationManager authenticationManager,
                                    SecurityContextRepository securityContextRepository,
-                                   SessionAuthenticationStrategy sessionAuthenticationStrategy
+                                   SessionAuthenticationStrategy sessionAuthenticationStrategy,
+                                   UserCacheService userCacheService
     ) {
         this.objectMapper = objectMapper;
         this.apiLoginProperties = securityProperties.getApiLogin();
         setFilterProcessesUrl(apiLoginProperties.getLoginProcessingUrl());
         setAuthenticationManager(authenticationManager);
         setSessionAuthenticationStrategy(sessionAuthenticationStrategy);
+        this.userCacheService = userCacheService;
 
         setAuthenticationDetailsSource(LoginExtraDetails::new);
 
@@ -89,8 +93,11 @@ public class ApiAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             super.successfulAuthentication(request, response, chain, authResult);
             return;
         }
-
-        super.successfulAuthentication(request, response, chain, authResult);
+        var mfaId = userCacheService.cacheUser(secureUser);
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.addHeader("X-Authenticate","mfa");
+        response.addHeader("X-Authenticate","realm="+mfaId);
+        this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
     }
 
     private void setResponseDetails(HttpServletResponse resp) {

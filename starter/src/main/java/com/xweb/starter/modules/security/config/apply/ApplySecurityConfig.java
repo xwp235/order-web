@@ -6,6 +6,7 @@ import com.xweb.starter.modules.security.config.filter.ApiAuthenticationFilter;
 import com.xweb.starter.modules.security.config.filter.WebAuthenticationFilter;
 import com.xweb.starter.modules.security.config.properties.FormLoginProperties;
 import com.xweb.starter.modules.security.config.properties.SecurityProperties;
+import com.xweb.starter.modules.security.service.UserCacheService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.SecurityConfigurer;
@@ -26,6 +27,7 @@ public class ApplySecurityConfig implements SecurityConfigurer<DefaultSecurityFi
     private final SecurityProperties securityProperties;
     private final ObjectMapper objectMapper;
     private final AuthenticationManager authenticationManager;
+    private final UserCacheService userCacheService;
 
     @Override
     public void init(HttpSecurity http) throws Exception {
@@ -35,7 +37,8 @@ public class ApplySecurityConfig implements SecurityConfigurer<DefaultSecurityFi
         var apiAuthenticationFilter = new ApiAuthenticationFilter(
                 securityProperties, objectMapper,
                 authenticationManager,securityContextRepository,
-                sessionAuthenticationStrategy
+                sessionAuthenticationStrategy,
+                userCacheService
         );
 
         var webAuthenticationFilter = getWebAuthenticationFilter(formLogin, sessionAuthenticationStrategy, securityContextRepository);
