@@ -179,10 +179,16 @@ public class RequestUtil {
 
     public static boolean isAjaxRequest(HttpServletRequest request) {
         String acceptHeader = null;
-        if (request != null) {
+        String contentType = null;
+        int contentLength = 0;
+        if (Objects.nonNull(request)) {
             acceptHeader = request.getHeader(HttpHeaders.ACCEPT);
+            contentType = request.getHeader(HttpHeaders.CONTENT_TYPE);
+            contentLength = request.getContentLength();
         }
-        return acceptHeader != null && acceptHeader.contains(MediaType.APPLICATION_JSON_VALUE);
+        var acceptJson = Objects.nonNull(acceptHeader) && acceptHeader.contains(MediaType.APPLICATION_JSON_VALUE);
+        var contentJson = Objects.nonNull(contentType) && StringUtils.equals(contentType, MediaType.APPLICATION_JSON_VALUE) && contentLength > 0;
+        return acceptJson || contentJson;
     }
 
 }
