@@ -8,6 +8,15 @@ import org.springframework.security.core.Authentication;
 
 import java.util.Collection;
 
+/**
+  共识策略
+  含义：多数同意即可授权。
+  工作机制：
+    统计所有投票者的票数。
+    如果“赞成票” > “反对票”，则授权。
+    如果“赞成票” ≤ “反对票”，则拒绝。
+    ABSTAIN（弃权票）不计入票数。
+*/
 public class ConsensusBasedVotingStrategy implements VotingStrategy {
 
     @Override
