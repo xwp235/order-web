@@ -12,7 +12,10 @@ import java.util.Collection;
 
 /**
   积极授权策略
-  只要有一个 voter 投了赞成票就授权
+    含义：只要有一个 voter 投了赞成票就授权。
+  工作机制：
+    只要有至少一个 voter 返回 ACCESS_GRANTED，立即授权。
+    只有所有 voter 都 ABSTAIN 或 DENIED 才会拒绝访问。
 */
 public class AffirmativeBasedVotingStrategy implements VotingStrategy {
 
