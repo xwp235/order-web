@@ -10,6 +10,10 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
+/**
+  积极授权策略
+  只要有一个 voter 投了赞成票就授权
+*/
 public class AffirmativeBasedVotingStrategy implements VotingStrategy {
 
     @Override
