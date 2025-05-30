@@ -8,6 +8,12 @@ import org.springframework.security.core.Authentication;
 
 import java.util.Collection;
 
+/**
+  含义：必须所有的 AccessDecisionVoter 都同意（投赞成票）才能授权。
+  工作机制：
+    如果任何一个 voter 投了反对票（ACCESS_DENIED），则拒绝访问。
+    如果没有反对票，且至少一个 voter 投了赞成票（ACCESS_GRANTED），则授权成功。
+ */   
 public class UnanimousBasedVotingStrategy implements VotingStrategy {
 
     @Override
